@@ -1,6 +1,11 @@
 let canvas;
 let ctx;
-let character = new MovableObject();
+let character = new Character();
+let enemies = [
+    new chicken(),
+    new chicken(),
+    new chicken(),
+];
 
 function init() {
     // Initialization code for the game
