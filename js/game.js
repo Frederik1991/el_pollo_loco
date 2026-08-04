@@ -2,9 +2,9 @@ let canvas;
 let ctx;
 let character = new Character();
 let enemies = [
-    new chicken(),
-    new chicken(),
-    new chicken(),
+    new Chicken(),
+    new Chicken(),
+    new Chicken(),
 ];
 
 function init() {
