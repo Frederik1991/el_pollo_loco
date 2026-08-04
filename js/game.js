@@ -1,11 +1,8 @@
 let canvas;
 let ctx;
-let character = new Character();
-let enemies = [
-    new Chicken(),
-    new Chicken(),
-    new Chicken(),
-];
+
+
+let world = new World ();
 
 function init() {
     // Initialization code for the game
