@@ -10,5 +10,5 @@ function init() {
     ctx = canvas.getContext('2d');
 
 
-console.log('My Character is:', character);
+console.log('My Character is:', world.character);
 }
