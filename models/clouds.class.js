@@ -1,7 +1,7 @@
 class Cloud extends MovableObject {
 
-    withd = 400; // Set a fixed width for clouds
-    height = 300; // Set a fixed height for clouds
+    width = 600; // Set a fixed width for clouds
+    height = 200; // Set a fixed height for clouds
 
     constructor() {
         super();
