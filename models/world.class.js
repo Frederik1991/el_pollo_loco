@@ -14,7 +14,7 @@ class World {
     ];
 
     backgroundObjects = [
-        new BackgroundObject('img/5_background/layers/1_first_layer/1.png', 0, 50),
+        new BackgroundObject('img/5_background/layers/1_first_layer/1.png', 0),
         
     ];
 
