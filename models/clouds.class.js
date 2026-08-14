@@ -9,7 +9,13 @@ class Cloud extends MovableObject {
 
         this.x = 50 + Math.random() * 700; // Random x position between 50 and 750
         this.y = 20 + Math.random() * 60; // position clouds near top
+
+        this.animate();
     }
 
-    
+    animate() {
+        setInterval( () => {
+            this.x -= 0.15; // Move clouds to the left
+        },1000 / 60); // 60 frames per second
+    }
 }
