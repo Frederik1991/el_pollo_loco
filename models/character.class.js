@@ -11,7 +11,7 @@ class Character extends MovableObject {
         'img/2_character_pepe/2_walk/W-26.png'
     ];
 
-    currentImageIndex = 0;
+    
 
     constructor() {
         super().loadImage('img/2_character_pepe/2_walk/W-21.png');
@@ -24,11 +24,6 @@ class Character extends MovableObject {
             this.currentImageIndex = (this.currentImageIndex + 1) % this.IMAGES_WALKING.length;
             this.img = this.imageCache[this.IMAGES_WALKING[this.currentImageIndex]];
         }, 100);
-    }
-
-    jump() {
-
-    
     }
 
     jump() {
