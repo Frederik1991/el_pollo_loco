@@ -15,7 +15,7 @@ class MovableObject {
 
     loadImages(arr) {
         arr.forEach((path) => {
-            let img = new Image();  
+            let img = new Image();
             img.src = path;
             this.imageCache[path] = img;
         });
@@ -27,6 +27,8 @@ class MovableObject {
     }
 
     moveLeft() {
-        console.log('Moving left');
+        setInterval(() => {
+            this.x -= 0.15; // Move clouds to the left
+        }, 1000 / 60); // 60 frames per second
     }
 }
