@@ -5,6 +5,7 @@ class MovableObject {
     width = 100;
     height = 150;
     currentImageIndex = 0;
+    speed = 0.15;
 
     imageCache = {};
 
@@ -28,7 +29,7 @@ class MovableObject {
 
     moveLeft() {
         setInterval(() => {
-            this.x -= 0.15; // Move clouds to the left
+            this.x -= this.speed; // Move clouds to the left
         }, 1000 / 60); // 60 frames per second
     }
 }
