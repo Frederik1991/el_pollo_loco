@@ -14,38 +14,38 @@ function init() {
 
 
 window.addEventListener("keydown", (event) => {
-    if (event.keycode == 37) {
+    if (event.key == 'ArrowLeft') {
         keyboard.left = true;
     }
-    if (event.keycode == 39) {
+    if (event.key == 'ArrowRight') {
         keyboard.right = true;
     }
-    if (event.keycode == 38) {
+    if (event.key == 'ArrowUp') {
         keyboard.up = true;
     }
-    if (event.keycode == 40) {
+    if (event.key == 'ArrowDown') {
         keyboard.down = true;
     }
-    if (event.keycode == 32) {
+    if (event.key == ' ') {
         keyboard.space = true;
     }
 
 });
 
 window.addEventListener("keyup", (event) => {
-    if (event.keycode == 37) {
+    if (event.key == 'ArrowLeft') {
         keyboard.left = false;
     }
-    if (event.keycode == 39) {
+    if (event.key == 'ArrowRight') {
         keyboard.right = false;
     }
-    if (event.keycode == 38) {
+    if (event.key == 'ArrowUp') {
         keyboard.up = false;
     }
-    if (event.keycode == 40) {
+    if (event.key == 'ArrowDown') {
         keyboard.down = false;
     }
-    if (event.keycode == 32) {
+    if (event.key == ' ') {
         keyboard.space = false;
     }
 

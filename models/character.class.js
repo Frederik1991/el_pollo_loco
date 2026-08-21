@@ -22,10 +22,18 @@ class Character extends MovableObject {
     }
 
     animate() {
+ 
+
         setInterval(() => {
+
+            if (this.world.keyboard.right) {
+                
             this.currentImageIndex = (this.currentImageIndex + 1) % this.IMAGES_WALKING.length;
             this.img = this.imageCache[this.IMAGES_WALKING[this.currentImageIndex]];
+            }
         }, 100);
+
+    
     }
 
     jump() {
