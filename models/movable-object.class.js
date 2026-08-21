@@ -33,4 +33,11 @@ class MovableObject {
             this.x -= this.speed; // Move clouds to the left
         }, 1000 / 60); // 60 frames per second
     }
+
+    playAnimation(images) {
+        let i = this.currentImageIndex % images.length;
+        let path = images[i];
+        this.img = this.imageCache[path];
+        this.currentImageIndex++;
+    }
 }
