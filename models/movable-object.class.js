@@ -6,6 +6,7 @@ class MovableObject {
     height = 150;
     currentImageIndex = 0;
     speed = 0.15;
+    otherDirection = false;
 
     imageCache = {};
 
