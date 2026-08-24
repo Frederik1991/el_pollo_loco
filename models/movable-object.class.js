@@ -63,11 +63,14 @@ class MovableObject {
     }
 
     drawFrame(ctx) {
-        ctx.beginPath();
-        ctx.linewidth = '10';
-        ctx.strokeStyle = 'blue';
-        ctx.rect(this.x, this.y, this.width, this.height);
-        ctx.stroke();
+
+        if (this instanceof Character || this instanceof Chicken || this instanceof Endboss) {
+            ctx.beginPath();
+            ctx.linewidth = '10';
+            ctx.strokeStyle = 'blue';
+            ctx.rect(this.x, this.y, this.width, this.height);
+            ctx.stroke();
+        }
     }
 
 }
