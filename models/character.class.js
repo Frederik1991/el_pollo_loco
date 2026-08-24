@@ -12,6 +12,10 @@ class Character extends MovableObject {
         'img/2_character_pepe/2_walk/W-26.png'
     ];
 
+    IMAGES_JUMPING = [
+        
+    ]
+
     world;
 
     
