@@ -39,14 +39,15 @@ class MovableObject {
     }
 
     moveRight() {
-        console.log('Moving right');
+        this.x += this.speed;
+        this.otherDirection = false;
 
     }
 
     moveLeft() {
-        setInterval(() => {
-            this.x -= this.speed; // Move clouds to the left
-        }, 1000 / 60); // 60 frames per second
+        this.x -= this.speed;
+        this.otherDirection = true;
+        
     }
 
     playAnimation(images) {
@@ -55,4 +56,10 @@ class MovableObject {
         this.img = this.imageCache[path];
         this.currentImageIndex++;
     }
+
+    jump() {
+        this.speedY = 30;
+        console.log(this.speedY);
+    }
+
 }
