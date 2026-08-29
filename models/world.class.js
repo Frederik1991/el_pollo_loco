@@ -10,7 +10,7 @@ class World {
     camera_x = 0;
 
     statusBarHealth = new StatusBarHealth
-    statusBarBottle = new StatusBarBottle
+    statusBarBottle = new StatusBarBottle(this);
     throwableObject = []
     collectedBottles = []
 
@@ -38,6 +38,7 @@ class World {
     checkThrowObject() {
         if (this.keyboard.d && this.collectedBottles.length > 0) {
             this.collectedBottles.pop();
+            this.statusBarBottle.setPercentage(this.collectedBottles.length / 10 * 100);
             let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100);
             this.throwableObject.push(bottle);
         }
@@ -56,6 +57,7 @@ class World {
         this.level.bottles.forEach((bottle, index) => {
             if (this.character.isColliding(bottle)) {
                 this.collectedBottles.push(bottle);
+                this.statusBarBottle.setPercentage(this.collectedBottles.length / 10 * 100);
                 this.level.bottles.splice(index, 1);
             }
         });
