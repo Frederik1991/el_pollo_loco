@@ -12,6 +12,7 @@ class World {
     statusBarHealth = new StatusBarHealth
     statusBarBottle = new StatusBarBottle
     throwableObject = []
+    collectedBottles = []
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -30,12 +31,14 @@ class World {
         setInterval(() => {
             this.checkCollisions();
             this.checkThrowObject();
+            this.checkBottleCollision();
         }, 200);
     }
 
     checkThrowObject() {
-        if (this.keyboard.d) {
-            let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100)
+        if (this.keyboard.d && this.collectedBottles.length > 0) {
+            this.collectedBottles.pop();
+            let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100);
             this.throwableObject.push(bottle);
         }
     }
@@ -45,6 +48,15 @@ class World {
             if (this.character.isColliding(enemy)) {
                 this.character.hit();
                 this.statusBarHealth.setPercentage(this.character.energy)
+            }
+        });
+    }
+
+    checkBottleCollision() {
+        this.level.bottles.forEach((bottle, index) => {
+            if (this.character.isColliding(bottle)) {
+                this.collectedBottles.push(bottle);
+                this.level.bottles.splice(index, 1);
             }
         });
     }
