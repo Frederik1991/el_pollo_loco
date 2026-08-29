@@ -9,7 +9,7 @@ class World {
     keyboard;
     camera_x = 0;
 
-    statusBar = new StatusBar
+    statusBar = new StatusBarHealth
     throwableObject = []
 
     constructor(canvas, keyboard) {
