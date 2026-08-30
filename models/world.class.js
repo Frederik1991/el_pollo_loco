@@ -1,14 +1,10 @@
 class World {
-
     character = new Character();
-
     level = level1;
-
     ctx;
     canvas;
     keyboard;
     camera_x = 0;
-
     statusBarHealth = new StatusBarHealth
     statusBarBottle = new StatusBarBottle(this);
     statusBarCoin = new StatusBarCoins(this);
@@ -76,10 +72,8 @@ class World {
         });
     }
 
-
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
         this.ctx.translate(this.camera_x, 0);
         this.addObjectsToMap(this.level.backgroundObjects);
         this.addToMap(this.character);
