@@ -38,7 +38,7 @@ class World {
         if (this.keyboard.d && this.collectedBottles.length > 0) {
             this.collectedBottles.pop();
             this.statusBarBottle.setPercentage(this.collectedBottles.length / 10 * 100);
-            let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100);
+            let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100, this);
             this.throwableObject.push(bottle);
         }
     }
