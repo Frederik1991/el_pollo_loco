@@ -3,6 +3,7 @@ class Endboss extends MovableObject {
     width = 300;
     height = 500;
     y = -10;
+    energy = 100;
 
     IMAGES_WALKING = [
         'img/4_enemie_boss_chicken/1_walk/G1.png',
