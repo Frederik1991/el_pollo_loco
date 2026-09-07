@@ -38,8 +38,13 @@ class World {
     checkThrowableObjectCollisions() {
         this.throwableObject.forEach((throwableObject) => {
             this.level.enemies.forEach((enemy) => {
-                if (!enemy.isDead() && throwableObject.isColliding(enemy)) {
-                    enemy.energy = 0;
+                if (!throwableObject.hasHit && !enemy.isDead() && throwableObject.isColliding(enemy)) {
+                    throwableObject.hasHit = true;
+                    if (enemy instanceof Endboss) {
+                        enemy.hit();
+                    } else {
+                        enemy.energy = 0;
+                    }
                     throwableObject.playAnimation(throwableObject.IMAGES_SPLASH);
                 }
             });

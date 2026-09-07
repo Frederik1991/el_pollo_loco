@@ -1,6 +1,7 @@
 class ThrowableObject extends MovableObject {
     width = 60;
     height = 80;
+    hasHit = false;
 
     IMAGES_ROTATE = [
         'img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png',
