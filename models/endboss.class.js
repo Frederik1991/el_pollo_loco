@@ -4,6 +4,7 @@ class Endboss extends MovableObject {
     height = 500;
     y = -10;
     energy = 50;
+    isAttacking = false;
 
     world;
 
@@ -61,6 +62,7 @@ class Endboss extends MovableObject {
     }
 
     isMoving = false;
+    movementInterval;
 
     animate() {
         setInterval(() => {
@@ -76,23 +78,45 @@ class Endboss extends MovableObject {
                     if (this.isDead()) {
                         this.playAnimation(this.IMAGES_DEAD);
                     } else
-                        this.playAnimation(this.IMAGES_ALERT);
-        }, 200);
+
+                        if (this.isAttacking) {
+                            this.playAnimation(this.IMAGES_ATTACK);
+                        } else
+
+                            this.playAnimation(this.IMAGES_ALERT);
+        }, 100);
     }
 
- startMovingWhenReady() {
-    let checkInterval = setInterval(() => {
-        if (this.world.character.x > 1800) {
-            clearInterval(checkInterval);
-            this.moveLeft();
-        }
-    }, 100);
-}
+    startMovingWhenReady() {
+        let checkInterval = setInterval(() => {
+            if (this.world.character.x > 1800) {
+                clearInterval(checkInterval);
+                this.moveLeft();
+            }
+        }, 100);
+    }
 
     moveLeft() {
-        setInterval(() => {
+        this.movementInterval = setInterval(() => {
+            if (this.isDead()) {
+                clearInterval(this.movementInterval);
+                return;
+            }
+
             this.x -= 10;
-        }, 1000);
+        }, 500);
+    }
+
+    attack() {
+        if (this.isAttacking) {
+            return;
+        }
+
+        this.isAttacking = true;
+        this.currentImageIndex = 0;
+        setTimeout(() => {
+            this.isAttacking = false;
+        }, this.IMAGES_ATTACK.length * 200);
     }
 
 }

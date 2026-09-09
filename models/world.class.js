@@ -68,8 +68,14 @@ class World {
     checkCollisions() {
         this.level.enemies.forEach((enemy) => {
             if (!enemy.isDead() && this.character.isColliding(enemy)) {
-                this.character.hit();
-                this.statusBarHealth.setPercentage(this.character.energy)
+                if (enemy instanceof Endboss) {
+                    enemy.attack();
+                }
+
+                if (!this.character.isHurt()) {
+                    this.character.hit();
+                    this.statusBarHealth.setPercentage(this.character.energy)
+                }
             }
         });
     }
