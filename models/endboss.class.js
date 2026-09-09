@@ -63,27 +63,22 @@ class Endboss extends MovableObject {
 
     isMoving = false;
     movementInterval;
+    movementStateInterval;
 
     animate() {
         setInterval(() => {
 
-            if (this.isMoving) {
+            if (this.isDead()) {
+                this.playAnimation(this.IMAGES_DEAD);
+            } else if (this.isHurt()) {
+                this.playAnimation(this.IMAGES_HURT);
+            } else if (this.isAttacking) {
+                this.playAnimation(this.IMAGES_ATTACK);
+            } else if (this.isMoving) {
                 this.playAnimation(this.IMAGES_WALKING);
-            } else
-
-                if (this.isHurt()) {
-                    this.playAnimation(this.IMAGES_HURT);
-                } else
-
-                    if (this.isDead()) {
-                        this.playAnimation(this.IMAGES_DEAD);
-                    } else
-
-                        if (this.isAttacking) {
-                            this.playAnimation(this.IMAGES_ATTACK);
-                        } else
-
-                            this.playAnimation(this.IMAGES_ALERT);
+            } else {
+                this.playAnimation(this.IMAGES_ALERT);
+            }
         }, 100);
     }
 
@@ -97,13 +92,27 @@ class Endboss extends MovableObject {
     }
 
     moveLeft() {
-        this.movementInterval = setInterval(() => {
+        this.isMoving = true;
+        this.movementStateInterval = setInterval(() => {
             if (this.isDead()) {
-                clearInterval(this.movementInterval);
+                clearInterval(this.movementStateInterval);
                 return;
             }
 
-            this.x -= 10;
+            this.isMoving = !this.isMoving;
+        }, 3000);
+
+        this.movementInterval = setInterval(() => {
+            if (this.isDead()) {
+                this.isMoving = false;
+                clearInterval(this.movementInterval);
+                clearInterval(this.movementStateInterval);
+                return;
+            }
+
+            if (this.isMoving) {
+                this.x -= 10;
+            }
         }, 500);
     }
 

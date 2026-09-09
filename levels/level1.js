@@ -1,3 +1,27 @@
+function createObjects(ObjectClass, count, minimumDistance, minimumX, maximumX) {
+    const positions = [];
+    let attempts = 0;
+
+    while (positions.length < count && attempts < 10000) {
+        const position = minimumX + Math.random() * (maximumX - minimumX);
+        const positionIsFree = positions.every(existingPosition =>
+            Math.abs(position - existingPosition) >= minimumDistance
+        );
+
+        if (positionIsFree) {
+            positions.push(position);
+        }
+
+        attempts++;
+    }
+
+    return positions.map(position => {
+        const object = new ObjectClass();
+        object.x = position;
+        return object;
+    });
+}
+
 const level1 = new Level(
 
     [
@@ -37,29 +61,7 @@ const level1 = new Level(
         new BackgroundObject('img/5_background/layers/1_first_layer/2.png', 719 * 3),
     ],
 
-    [
-        new Bottle(),
-        new Bottle(),
-        new Bottle(),
-        new Bottle(),
-        new Bottle(),
-        new Bottle(),
-        new Bottle(),
-        new Bottle(),
-        new Bottle(),
-        new Bottle(),
-    ],
+    createObjects(Bottle, 10, 180, 50, 2350),
 
-    [
-        new Coin(),
-        new Coin(),
-        new Coin(),
-        new Coin(),
-        new Coin(),
-        new Coin(),
-        new Coin(),
-        new Coin(),
-        new Coin(),
-        new Coin(),
-    ],
+    createObjects(Coin, 10, 180, 200, 2500),
 );
