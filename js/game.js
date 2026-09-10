@@ -18,10 +18,9 @@ function restartGame() {
 }
 
 function init() {
+    createLevel1();
     canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard);
-
-
     console.log('My Character is:', world.character);
 }
 

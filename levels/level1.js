@@ -22,7 +22,10 @@ function createObjects(ObjectClass, count, minimumDistance, minimumX, maximumX) 
     });
 }
 
-const level1 = new Level(
+
+
+function createLevel1() {
+    level1 = new Level(
 
     [
         new Chicken(),
@@ -64,4 +67,9 @@ const level1 = new Level(
     createObjects(Bottle, 10, 180, 50, 2350),
 
     createObjects(Coin, 10, 180, 200, 2500),
+
 );
+
+}
+
+createLevel1();
