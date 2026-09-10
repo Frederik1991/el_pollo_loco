@@ -2,7 +2,16 @@ let canvas;
 let world;
 let keyboard = new Keyboard();
 
+function startGame() {
+    document.getElementById('startScreen').classList.add('d-none');
+    init();
+}
 
+function restartGame() {
+    document.getElementById('winScreen').classList.add('d-none');
+    document.getElementById('loseScreen').classList.add('d-none');
+    document.getElementById('startScreen').classList.remove('d-none');
+}
 
 function init() {
     canvas = document.getElementById('canvas');

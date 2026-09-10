@@ -22,13 +22,13 @@ class World {
     }
 
     setWorld() {
-    this.character.world = this;
-    this.level.enemies.forEach((enemy) => {
-        if (enemy instanceof Endboss) {
-            enemy.world = this;
-        }
-    });
-}
+        this.character.world = this;
+        this.level.enemies.forEach((enemy) => {
+            if (enemy instanceof Endboss) {
+                enemy.world = this;
+            }
+        });
+    }
 
     run() {
         setInterval(() => {
@@ -37,8 +37,25 @@ class World {
             this.checkThrowableObjectCollisions();
             this.checkBottleCollision();
             this.checkCoinCollision();
+            this.checkGameStatus();
         }, 50);
     }
+
+    checkGameStatus() {
+        if (this.character.isDead()) {
+            this.showLoseScreen();
+        } else if (this.level.enemies.some(e => e instanceof Endboss && e.isDead())) {
+            this.showWinScreen();
+        }
+    }
+
+    showLoseScreen() {
+        document.getElementById('loseScreen').classList.remove('d-none');
+    }
+
+    showWinScreen() {
+    document.getElementById('winScreen').classList.remove('d-none');
+}
 
     checkThrowableObjectCollisions() {
         this.throwableObject.forEach((throwableObject) => {
