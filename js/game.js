@@ -8,6 +8,10 @@ function startGame() {
 }
 
 function restartGame() {
+    if (world) {
+        clearInterval(world.gameInterval);
+        cancelAnimationFrame(world.animationFrame);
+    }
     document.getElementById('winScreen').classList.add('d-none');
     document.getElementById('loseScreen').classList.add('d-none');
     document.getElementById('startScreen').classList.remove('d-none');

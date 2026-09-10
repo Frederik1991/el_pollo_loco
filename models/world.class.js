@@ -31,15 +31,15 @@ class World {
     }
 
     run() {
-        setInterval(() => {
-            this.checkCollisions();
-            this.checkThrowObject();
-            this.checkThrowableObjectCollisions();
-            this.checkBottleCollision();
-            this.checkCoinCollision();
-            this.checkGameStatus();
-        }, 50);
-    }
+    this.gameInterval = setInterval(() => {
+        this.checkCollisions();
+        this.checkThrowObject();
+        this.checkThrowableObjectCollisions();
+        this.checkBottleCollision();
+        this.checkCoinCollision();
+        this.checkGameStatus();
+    }, 50);
+}
 
     checkGameStatus() {
         if (this.character.isDead()) {
@@ -118,26 +118,25 @@ class World {
     }
 
     draw() {
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.ctx.translate(this.camera_x, 0);
-        this.addObjectsToMap(this.level.backgroundObjects);
-        this.addToMap(this.character);
-        this.addObjectsToMap(this.level.enemies);
-        this.addObjectsToMap(this.level.clouds);
-        this.addObjectsToMap(this.level.bottles);
-        this.addObjectsToMap(this.level.coins);
-        this.addObjectsToMap(this.throwableObject);
-        this.ctx.translate(-this.camera_x, 0);
-        this.addToMap(this.statusBarHealth);
-        this.addToMap(this.statusBarBottle)
-        this.addToMap(this.statusBarCoin)
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.ctx.translate(this.camera_x, 0);
+    this.addObjectsToMap(this.level.backgroundObjects);
+    this.addToMap(this.character);
+    this.addObjectsToMap(this.level.enemies);
+    this.addObjectsToMap(this.level.clouds);
+    this.addObjectsToMap(this.level.bottles);
+    this.addObjectsToMap(this.level.coins);
+    this.addObjectsToMap(this.throwableObject);
+    this.ctx.translate(-this.camera_x, 0);
+    this.addToMap(this.statusBarHealth);
+    this.addToMap(this.statusBarBottle)
+    this.addToMap(this.statusBarCoin)
 
-
-        self = this;
-        requestAnimationFrame(function () {
-            self.draw()
-        });
-    }
+    self = this;
+    this.animationFrame = requestAnimationFrame(function () {
+        self.draw()
+    });
+}
     addObjectsToMap(objects) {
         objects.forEach(o => {
             this.addToMap(o);
