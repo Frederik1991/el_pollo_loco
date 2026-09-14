@@ -1,8 +1,14 @@
+@font-face {
+  font-family: 'rye';
+    src: url('fonts/Rye-Regular.ttf') format('truetype');
+}
+
 html,
 body {
     width: 100%;
     min-height: 100%;
     margin: 0;
+    font-family: 'rye', sans-serif;
 }
 
 body {
@@ -16,6 +22,17 @@ body {
     background-position: center;
     background-repeat: no-repeat;
     min-height: 100vh;
+    
+}
+
+h1 {
+    color: #F8CB01;
+    font-family: 'rye', sans-serif;
+    border: 2px solid #d4a01c;
+    font-size: 64px;
+    letter-spacing: 3px;
+    text-shadow: 4px 2px 2px rgba(0, 0, 0, 0.5);
+
 }
 
 
@@ -25,9 +42,26 @@ body {
     height: 480px;
 }
 
+.controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 720px;
+    margin: 18px auto 0;
+    color: #F8CB01;
+    font-family: 'rye', sans-serif;
+    font-size: 32px;
+    text-shadow: 4px 2px 2px rgba(0, 0, 0, 0.8);
+}
+
+.controls strong {
+    color: white;
+}
+
 canvas {
     display: block;
     background-color: black;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
 }
 
 .screen {
