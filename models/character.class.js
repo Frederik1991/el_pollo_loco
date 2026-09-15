@@ -60,6 +60,19 @@ class Character extends MovableObject {
         this.animate();
     }
 
+    isFallingOn(mo) {
+        const characterBox = this.getCollisionBox();
+        const otherBox = mo.getCollisionBox();
+        const currentBottom = characterBox.y + characterBox.height;
+        const previousBottom = currentBottom + this.speedY;
+        const isFalling = this.speedY < 0;
+        const crossedEnemyTop = previousBottom <= otherBox.y + 15 && currentBottom > otherBox.y;
+        const overlapsHorizontally = characterBox.x + characterBox.width > otherBox.x &&
+            characterBox.x < otherBox.x + otherBox.width;
+
+        return isFalling && crossedEnemyTop && overlapsHorizontally;
+    }
+
     animate() {
 
         setInterval(() => {

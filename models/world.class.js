@@ -85,6 +85,12 @@ class World {
     checkCollisions() {
         this.level.enemies.forEach((enemy) => {
             if (!enemy.isDead() && this.character.isColliding(enemy)) {
+                if (enemy instanceof Chicken && this.character.isFallingOn(enemy)) {
+                    enemy.energy = 0;
+                    this.character.jump();
+                    return;
+                }
+
                 if (enemy instanceof Endboss) {
                     enemy.attack();
                 }
