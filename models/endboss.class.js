@@ -5,6 +5,12 @@ class Endboss extends MovableObject {
     y = -10;
     energy = 50;
     isAttacking = false;
+    offset = {
+        top: 20,
+        right: 35,
+        bottom: 15,
+        left: 35,
+    };
 
     world;
 

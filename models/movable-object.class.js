@@ -5,6 +5,12 @@ class MovableObject extends DrawableObject {
     acceleration = 2.5;
     energy = 100;
     lastHit = 0;
+    offset = {
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0,
+    };
 
     
 
@@ -46,10 +52,22 @@ class MovableObject extends DrawableObject {
     }
 
     isColliding(mo) {
-        return this.x + this.width > mo.x &&
-            this.y + this.height > mo.y &&
-            this.x < mo.x + mo.width &&
-            this.y < mo.y + mo.height;
+        const thisBox = this.getCollisionBox();
+        const otherBox = mo.getCollisionBox();
+
+        return thisBox.x + thisBox.width > otherBox.x &&
+            thisBox.y + thisBox.height > otherBox.y &&
+            thisBox.x < otherBox.x + otherBox.width &&
+            thisBox.y < otherBox.y + otherBox.height;
+    }
+
+    getCollisionBox() {
+        return {
+            x: this.x + this.offset.left,
+            y: this.y + this.offset.top,
+            width: this.width - this.offset.left - this.offset.right,
+            height: this.height - this.offset.top - this.offset.bottom,
+        };
     }
 
     hit() {
