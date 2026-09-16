@@ -117,6 +117,7 @@ canvas {
     font-size: 16px;
     margin: 4px 2px;
     cursor: pointer;
+    font-family: 'rye', sans-serif;
 }
 
 .mute-button {

@@ -5,6 +5,7 @@ let keyboard = new Keyboard();
 window.addEventListener('load', () => {
     SoundManager.init();
     updateMuteIcon();
+    setupTouchControls();
 });
 
 function startGame() {
@@ -37,6 +38,31 @@ function toggleMute() {
 function updateMuteIcon() {
     let button = document.getElementById('muteButton');
     button.textContent = SoundManager.isMuted ? '🔇' : '🔊';
+}
+
+function setupTouchControls() {
+    bindTouchButton('btnLeft', 'left');
+    bindTouchButton('btnRight', 'right');
+    bindTouchButton('btnJump', 'space');
+    bindTouchButton('btnThrow', 'd');
+}
+
+function bindTouchButton(buttonId, keyboardProperty) {
+    let button = document.getElementById(buttonId);
+
+    button.addEventListener('touchstart', (event) => {
+        event.preventDefault();
+        keyboard[keyboardProperty] = true;
+    });
+
+    button.addEventListener('touchend', (event) => {
+        event.preventDefault();
+        keyboard[keyboardProperty] = false;
+    });
+
+    button.addEventListener('contextmenu', (event) => {
+        event.preventDefault();
+    });
 }
 
 window.addEventListener("keydown", (event) => {
