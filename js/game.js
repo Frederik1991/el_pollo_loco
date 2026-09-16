@@ -1,10 +1,12 @@
 let canvas;
 let world;
 let keyboard = new Keyboard();
+SoundManager.init();
 
 function startGame() {
     document.getElementById('startScreen').classList.add('d-none');
     init();
+    SoundManager.sounds.music.play();
 }
 
 function restartGame() {

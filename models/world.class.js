@@ -42,12 +42,22 @@ class World {
 }
 
     checkGameStatus() {
-        if (this.character.isDead()) {
-            this.showLoseScreen();
-        } else if (this.level.enemies.some(e => e instanceof Endboss && e.isDead())) {
-            this.showWinScreen();
-        }
+    if (this.gameEnded) {
+        return;
     }
+
+    if (this.character.isDead()) {
+        this.gameEnded = true;
+        this.showLoseScreen();
+        SoundManager.play('gameOver');
+        SoundManager.sounds.music.pause();
+    } else if (this.level.enemies.some(e => e instanceof Endboss && e.isDead())) {
+        this.gameEnded = true;
+        this.showWinScreen();
+        SoundManager.play('win');
+        SoundManager.sounds.music.pause();
+    }
+}
 
     showLoseScreen() {
         document.getElementById('loseScreen').classList.remove('d-none');
@@ -62,6 +72,7 @@ class World {
             this.level.enemies.forEach((enemy) => {
                 if (!throwableObject.hasHit && !enemy.isDead() && throwableObject.isColliding(enemy)) {
                     throwableObject.hasHit = true;
+                    SoundManager.play('bottleBreak');
                     if (enemy instanceof Endboss) {
                         enemy.hit();
                     } else {
@@ -76,10 +87,12 @@ class World {
     checkThrowObject() {
         if (this.keyboard.d && this.collectedBottles.length > 0) {
             this.collectedBottles.pop();
+            SoundManager.play('throwBottle');
             this.statusBarBottle.setPercentage(this.collectedBottles.length / 10 * 100);
             let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100, this);
             this.throwableObject.push(bottle);
         }
+        
     }
 
     checkCollisions() {
@@ -119,6 +132,7 @@ class World {
                 this.collectedCoins.push(coin);
                 this.statusBarCoin.setPercentage(this.collectedCoins.length / 10 * 100);
                 this.level.coins.splice(index, 1);
+                SoundManager.play('collectCoin');
             }
         });
     }

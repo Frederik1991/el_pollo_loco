@@ -48,6 +48,7 @@ class MovableObject extends DrawableObject {
 
     jump() {
         this.speedY = 30;
+        SoundManager.play('jump');
     }
 
     isColliding(mo) {
@@ -76,6 +77,7 @@ class MovableObject extends DrawableObject {
         } else {
             this.lastHit = new Date().getTime();
         }
+        SoundManager.play('hurt');
     }
 
     isHurt() {
