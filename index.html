@@ -35,18 +35,35 @@
     <div class="game-container">
         <canvas id="canvas" width="720" height="480"></canvas>
 
+        <button id="muteButton" class="mute-button" onclick="toggleMute()">🔊</button>
+
         <div id="startScreen" class="screen">
-         <img class= "screen-img" src="img/9_intro_outro_screens/start/startscreen_1.png" alt="Startbildschirm">
+            <img class="screen-img" src="img/9_intro_outro_screens/start/startscreen_1.png" alt="Startbildschirm">
             <button class="button" onclick="startGame()">Start</button>
         </div>
         <div id="winScreen" class="screen d-none">
-            <img class= "screen-img" src="img/You won, you lost/You won A.png" alt="Gewonnen">
+            <img class="screen-img" src="img/You won, you lost/You won A.png" alt="Gewonnen">
             <button class="button" onclick="restartGame()">Neustart</button>
         </div>
         <div id="loseScreen" class="screen d-none">
-            <img class= "screen-img" src="img/You won, you lost/You lost b.png" alt="Verloren">
+            <img class="screen-img" src="img/You won, you lost/You lost b.png" alt="Verloren">
             <button class="button" onclick="restartGame()">Neustart</button>
         </div>
+
+        <div id="touchControls" class="touch-controls">
+            <div class="touch-left">
+                <button id="btnLeft" class="touch-button">←</button>
+                <button id="btnRight" class="touch-button">→</button>
+            </div>
+            <div class="touch-right">
+                <button id="btnThrow" class="touch-button">🍾</button>
+                <button id="btnJump" class="touch-button">⬆</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="rotateHint" class="rotate-hint">
+        <p>Bitte drehe dein Gerät ins Querformat, um zu spielen.</p>
     </div>
 
     <div class="controls">

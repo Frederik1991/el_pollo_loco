@@ -1,7 +1,11 @@
 let canvas;
 let world;
 let keyboard = new Keyboard();
-SoundManager.init();
+
+window.addEventListener('load', () => {
+    SoundManager.init();
+    updateMuteIcon();
+});
 
 function startGame() {
     document.getElementById('startScreen').classList.add('d-none');
@@ -25,6 +29,15 @@ function init() {
     world = new World(canvas, keyboard);
 }
 
+function toggleMute() {
+    SoundManager.toggleMute();
+    updateMuteIcon();
+}
+
+function updateMuteIcon() {
+    let button = document.getElementById('muteButton');
+    button.textContent = SoundManager.isMuted ? '🔇' : '🔊';
+}
 
 window.addEventListener("keydown", (event) => {
     if (event.key == 'ArrowLeft') {
@@ -40,6 +53,7 @@ window.addEventListener("keydown", (event) => {
         keyboard.down = true;
     }
     if (event.key == ' ') {
+        event.preventDefault();
         keyboard.space = true;
     }
     if (event.code == 'KeyD') {
