@@ -1,3 +1,6 @@
+/**
+ * Represents a basic walking chicken enemy.
+ */
 class Chicken extends MovableObject {
 
     y = 360;
@@ -21,8 +24,10 @@ class Chicken extends MovableObject {
         'img/3_enemies_chicken/chicken_normal/2_dead/dead.png'
     ]
 
-    
-
+    /**
+     * Creates a new chicken with a randomized speed and starting position,
+     * loads its images, and starts its animation loop.
+     */
     constructor() {
         super().loadImage('img/3_enemies_chicken/chicken_normal/1_walk/1_w.png');
         this.loadImages(this.IMAGES_WALKING);
@@ -30,17 +35,20 @@ class Chicken extends MovableObject {
         this.speed = 0.15 + Math.random() * 0.5; // Random speed between 0.15 and 0.65
         this.x = 1000 + Math.random() * 1000; // Random x position between 200 and 700
         this.animate();
-        
     }
 
+    /**
+     * Continuously moves and animates the chicken while alive,
+     * or shows the dead frame once its energy reaches zero.
+     */
     animate() {
-        setInterval(() => { 
+        setInterval(() => {
             if (!this.isDead()) {
                 this.moveLeft();
                 this.playAnimation(this.IMAGES_WALKING);
             } else {
                 this.img = this.imageCache[this.IMAGES_DEAD[0]];
             }
-        }, 1000 /200);
-    }    
+        }, 1000 / 200);
+    }
 }
