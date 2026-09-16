@@ -47,6 +47,20 @@ function setupTouchControls() {
     bindTouchButton('btnThrow', 'd');
 }
 
+function openInfoDialog() {
+    document.getElementById('infoDialog').classList.remove('d-none');
+}
+
+function closeInfoDialog() {
+    document.getElementById('infoDialog').classList.add('d-none');
+}
+
+function closeInfoDialogOnOverlay(event) {
+    if (event.target.id === 'infoDialog') {
+        closeInfoDialog();
+    }
+}
+
 function bindTouchButton(buttonId, keyboardProperty) {
     let button = document.getElementById(buttonId);
 

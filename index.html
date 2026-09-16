@@ -41,6 +41,7 @@
         <div id="startScreen" class="screen">
             <img class="screen-img" src="img/9_intro_outro_screens/start/startscreen_1.png" alt="Startbildschirm">
             <button class="button" onclick="startGame()">Start</button>
+            <button class="button" onclick="openInfoDialog()">Anleitung</button>
         </div>
         <div id="winScreen" class="screen d-none">
             <img class="screen-img" src="img/You won, you lost/You won A.png" alt="Gewonnen">
@@ -72,6 +73,23 @@
         <span><strong>Leertaste</strong> Springen</span>
         <span><strong>D</strong> <br>Flasche werfen</span>
     </div>
+
+    <div id="infoDialog" class="dialog-overlay d-none" onclick="closeInfoDialogOnOverlay(event)">
+    <div class="dialog-box">
+        <button class="dialog-close" onclick="closeInfoDialog()">✕</button>
+        <h2>Die Geschichte</h2>
+        <p>
+            Pepe hat sich in der Wüste verlaufen, auf der Suche nach dem legendären
+            El Pollo Loco. Zwischen Kakteen und wilden Hühnern muss er sich seinen Weg
+            bahnen, Münzen und Salsa-Flaschen sammeln und sich dem gefürchteten
+            Hühner-Endboss stellen.
+        </p>
+        <h2>Steuerung</h2>
+        <p><strong>←</strong> <strong>→</strong> Laufen</p>
+        <p><strong>Leertaste</strong> Springen</p>
+        <p><strong>D</strong> Flasche werfen</p>
+    </div>
+</div>
 
     <a href="impressum.html" class="button impressum-button">Impressum</a>
 
