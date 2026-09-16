@@ -1,3 +1,7 @@
+/**
+ * Represents the final boss enemy with its own state machine
+ * (alert, walking, attacking, hurt, dead).
+ */
 class Endboss extends MovableObject {
 
     width = 300;
@@ -55,6 +59,14 @@ class Endboss extends MovableObject {
         'img/4_enemie_boss_chicken/5_dead/G26.png'
     ]
 
+    isMoving = false;
+    movementInterval;
+    movementStateInterval;
+
+    /**
+     * Creates the endboss, loads all animation images,
+     * and starts its animation and movement-trigger loops.
+     */
     constructor() {
         super().loadImage(this.IMAGES_ALERT[0]);
         this.loadImages(this.IMAGES_WALKING);
@@ -67,13 +79,12 @@ class Endboss extends MovableObject {
         this.startMovingWhenReady();
     }
 
-    isMoving = false;
-    movementInterval;
-    movementStateInterval;
-
+    /**
+     * Continuously selects and plays the correct animation
+     * based on the endboss's current state.
+     */
     animate() {
         setInterval(() => {
-
             if (this.isDead()) {
                 this.playAnimation(this.IMAGES_DEAD);
             } else if (this.isHurt()) {
@@ -88,15 +99,23 @@ class Endboss extends MovableObject {
         }, 100);
     }
 
- startMovingWhenReady() {
-    let checkInterval = setInterval(() => {
-        if (this.world && this.world.character.x > 1800) {
-            clearInterval(checkInterval);
-            this.moveLeft();
-        }
-    }, 100);
-}
+    /**
+     * Waits until the character has reached a certain x position,
+     * then triggers the endboss to start moving left.
+     */
+    startMovingWhenReady() {
+        let checkInterval = setInterval(() => {
+            if (this.world && this.world.character.x > 1800) {
+                clearInterval(checkInterval);
+                this.moveLeft();
+            }
+        }, 100);
+    }
 
+    /**
+     * Starts the endboss's leftward movement, alternating between
+     * moving and pausing every few seconds until it dies.
+     */
     moveLeft() {
         this.isMoving = true;
         this.movementStateInterval = setInterval(() => {
@@ -104,7 +123,6 @@ class Endboss extends MovableObject {
                 clearInterval(this.movementStateInterval);
                 return;
             }
-
             this.isMoving = !this.isMoving;
         }, 3000);
 
@@ -122,16 +140,18 @@ class Endboss extends MovableObject {
         }, 500);
     }
 
+    /**
+     * Triggers the attack animation for a fixed duration,
+     * ignoring further calls while already attacking.
+     */
     attack() {
         if (this.isAttacking) {
             return;
         }
-
         this.isAttacking = true;
         this.currentImageIndex = 0;
         setTimeout(() => {
             this.isAttacking = false;
         }, this.IMAGES_ATTACK.length * 200);
     }
-
 }
