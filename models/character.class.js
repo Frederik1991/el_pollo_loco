@@ -76,6 +76,10 @@ class Character extends MovableObject {
     animate() {
 
         setInterval(() => {
+            if (this.isDead()) {
+                return;
+            }
+
             if (this.world.keyboard.right && this.x < this.world.level.level_end_x) {
                 this.otherDirection = false;
                 this.moveRight();
