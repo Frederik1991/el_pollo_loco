@@ -1,3 +1,7 @@
+/**
+ * Represents the playable character (Pepe) including movement,
+ * animations, and interaction with the game world.
+ */
 class Character extends MovableObject {
     y = 20;
     width = 140;
@@ -75,6 +79,10 @@ class Character extends MovableObject {
     lastActionTime = new Date().getTime();
     world;
 
+    /**
+     * Creates the character, loads all animation images,
+     * and starts gravity and animation loops.
+     */
     constructor() {
         super().loadImage('img/2_character_pepe/2_walk/W-21.png');
         this.loadImages(this.IMAGES_WALKING);
@@ -87,6 +95,12 @@ class Character extends MovableObject {
         this.animate();
     }
 
+    /**
+     * Checks whether the character is currently falling onto the
+     * top side of a given movable object (used for jump-kill logic).
+     * @param {MovableObject} mo - The object to check against.
+     * @returns {boolean} True if the character is landing on top of mo.
+     */
     isFallingOn(mo) {
         const characterBox = this.getCollisionBox();
         const otherBox = mo.getCollisionBox();
@@ -100,57 +114,95 @@ class Character extends MovableObject {
         return isFalling && crossedEnemyTop && overlapsHorizontally;
     }
 
+    /**
+     * Starts the movement/input loop and the animation-selection loop.
+     */
     animate() {
-
         setInterval(() => {
-            if (this.isDead()) {
-                return;
-            }
-
-            if (this.world.keyboard.right && this.x < this.world.level.level_end_x) {
-                this.otherDirection = false;
-                this.moveRight();
-                this.lastActionTime = new Date().getTime();
-            }
-
-            if (this.world.keyboard.left && this.x > 0) {
-                this.otherDirection = true;
-                this.moveLeft();
-                this.lastActionTime = new Date().getTime();
-            }
-
-            if (this.world.keyboard.space && !this.isAboveGround()) {
-                this.jump();
-                this.lastActionTime = new Date().getTime();
-            }
-
-            this.world.camera_x = -this.x + 100;
+            this.handleMovementInput();
         }, 1000 / 60);
 
-
         setInterval(() => {
-            if (this.isHurt()) {
-                this.playAnimation(this.IMAGES_HURT);
-            } else if (this.isDead()) {
-                this.playAnimation(this.IMAGES_DEAD);
-            } else if (this.isAboveGround()) {
-                this.playAnimation(this.IMAGES_JUMPING);
-            } else if (this.world.keyboard.right || this.world.keyboard.left) {
-                this.currentImageIndex = (this.currentImageIndex + 1) % this.IMAGES_WALKING.length;
-                this.img = this.imageCache[this.IMAGES_WALKING[this.currentImageIndex]];
-            } else if (this.isLongIdle()) {
-                this.playAnimation(this.IMAGES_LONG_IDLE);
-            } else {
-                this.playAnimation(this.IMAGES_IDLE);
-            }
+            this.handleAnimationState();
         }, 50);
-
-
     }
 
+    /**
+     * Handles per-frame movement input: horizontal movement, jumping,
+     * and camera follow. Does nothing if the character is dead.
+     */
+    handleMovementInput() {
+        if (this.isDead()) {
+            return;
+        }
+        this.handleHorizontalMovement();
+        this.handleJumpInput();
+        this.world.camera_x = -this.x + 100;
+    }
+
+    /**
+     * Moves the character left or right based on keyboard input
+     * and updates the last-action timestamp.
+     */
+    handleHorizontalMovement() {
+        if (this.world.keyboard.right && this.x < this.world.level.level_end_x) {
+            this.otherDirection = false;
+            this.moveRight();
+            this.lastActionTime = new Date().getTime();
+        }
+        if (this.world.keyboard.left && this.x > 0) {
+            this.otherDirection = true;
+            this.moveLeft();
+            this.lastActionTime = new Date().getTime();
+        }
+    }
+
+    /**
+     * Triggers a jump if the jump key is pressed and the character
+     * is currently on the ground.
+     */
+    handleJumpInput() {
+        if (this.world.keyboard.space && !this.isAboveGround()) {
+            this.jump();
+            this.lastActionTime = new Date().getTime();
+        }
+    }
+
+    /**
+     * Selects and plays the correct animation based on the
+     * character's current state (hurt, dead, jumping, walking, idle).
+     */
+    handleAnimationState() {
+        if (this.isHurt()) {
+            this.playAnimation(this.IMAGES_HURT);
+        } else if (this.isDead()) {
+            this.playAnimation(this.IMAGES_DEAD);
+        } else if (this.isAboveGround()) {
+            this.playAnimation(this.IMAGES_JUMPING);
+        } else if (this.world.keyboard.right || this.world.keyboard.left) {
+            this.playWalkingAnimation();
+        } else if (this.isLongIdle()) {
+            this.playAnimation(this.IMAGES_LONG_IDLE);
+        } else {
+            this.playAnimation(this.IMAGES_IDLE);
+        }
+    }
+
+    /**
+     * Advances and plays the next frame of the walking animation.
+     */
+    playWalkingAnimation() {
+        this.currentImageIndex = (this.currentImageIndex + 1) % this.IMAGES_WALKING.length;
+        this.img = this.imageCache[this.IMAGES_WALKING[this.currentImageIndex]];
+    }
+
+    /**
+     * Checks whether the character has been inactive long enough
+     * to switch to the long-idle (sleep) animation.
+     * @returns {boolean} True if at least 15 seconds have passed since the last action.
+     */
     isLongIdle() {
         let timePassed = (new Date().getTime() - this.lastActionTime) / 1000;
         return timePassed >= 15;
     }
-
 }
