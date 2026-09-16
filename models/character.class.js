@@ -110,15 +110,18 @@ class Character extends MovableObject {
             if (this.world.keyboard.right && this.x < this.world.level.level_end_x) {
                 this.otherDirection = false;
                 this.moveRight();
+                this.lastActionTime = new Date().getTime();
             }
 
             if (this.world.keyboard.left && this.x > 0) {
                 this.otherDirection = true;
                 this.moveLeft();
+                this.lastActionTime = new Date().getTime();
             }
 
             if (this.world.keyboard.space && !this.isAboveGround()) {
                 this.jump();
+                this.lastActionTime = new Date().getTime();
             }
 
             this.world.camera_x = -this.x + 100;
@@ -126,27 +129,28 @@ class Character extends MovableObject {
 
 
         setInterval(() => {
-
             if (this.isHurt()) {
                 this.playAnimation(this.IMAGES_HURT);
-            } else
-
-                if (this.isDead()) {
-                    this.playAnimation(this.IMAGES_DEAD);
-                } else
-
-                    if (this.isAboveGround()) {
-                        this.playAnimation(this.IMAGES_JUMPING);
-                    } else {
-
-                        if (this.world.keyboard.right || this.world.keyboard.left) {
-                            this.currentImageIndex = (this.currentImageIndex + 1) % this.IMAGES_WALKING.length;
-                            this.img = this.imageCache[this.IMAGES_WALKING[this.currentImageIndex]];
-                        }
-                    }
+            } else if (this.isDead()) {
+                this.playAnimation(this.IMAGES_DEAD);
+            } else if (this.isAboveGround()) {
+                this.playAnimation(this.IMAGES_JUMPING);
+            } else if (this.world.keyboard.right || this.world.keyboard.left) {
+                this.currentImageIndex = (this.currentImageIndex + 1) % this.IMAGES_WALKING.length;
+                this.img = this.imageCache[this.IMAGES_WALKING[this.currentImageIndex]];
+            } else if (this.isLongIdle()) {
+                this.playAnimation(this.IMAGES_LONG_IDLE);
+            } else {
+                this.playAnimation(this.IMAGES_IDLE);
+            }
         }, 50);
 
 
+    }
+
+    isLongIdle() {
+        let timePassed = (new Date().getTime() - this.lastActionTime) / 1000;
+        return timePassed >= 15;
     }
 
 }
