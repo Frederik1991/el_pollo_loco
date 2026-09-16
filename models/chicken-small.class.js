@@ -1,3 +1,6 @@
+/**
+ * Represents a smaller, faster variant of the Chicken enemy.
+ */
 class ChickenSmall extends Chicken {
 
     y = 365;
@@ -14,6 +17,10 @@ class ChickenSmall extends Chicken {
         'img/3_enemies_chicken/chicken_small/2_dead/dead.png'
     ];
 
+    /**
+     * Creates a new small chicken with its own images,
+     * a randomized speed, and a random starting position.
+     */
     constructor() {
         super();
         this.loadImage(this.IMAGES_WALKING[0]);
