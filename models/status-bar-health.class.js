@@ -1,4 +1,7 @@
-class StatusBarHealth extends DrawableObject{
+/**
+ * Status bar showing the character's current health/energy.
+ */
+class StatusBarHealth extends DrawableObject {
 
     IMAGES = [
         'img/7_statusbars/1_statusbar/2_statusbar_health/blue/0.png',
@@ -11,34 +14,46 @@ class StatusBarHealth extends DrawableObject{
 
     percentage = 100;
 
+    /**
+     * Creates the health status bar, loads its images,
+     * and initializes it at 100%.
+     */
     constructor() {
         super();
-         this.loadImages(this.IMAGES);
-         this.x = 20;
-         this.y = 5;
-         this.width = 220;
-         this.height = 60;
-         this.setPercentage(100);
+        this.loadImages(this.IMAGES);
+        this.x = 20;
+        this.y = 5;
+        this.width = 220;
+        this.height = 60;
+        this.setPercentage(100);
     }
 
+    /**
+     * Sets the current percentage and updates the displayed image.
+     * @param {number} percentage - Percentage of remaining health (0-100).
+     */
     setPercentage(percentage) {
         this.percentage = percentage;
         let path = this.IMAGES[this.resolveImageIndex()];
         this.img = this.imageCache[path];
     }
 
-    resolveImageIndex () {
-        if(this.percentage == 100) {
+    /**
+     * Determines which image index matches the current percentage.
+     * @returns {number} Index into the IMAGES array.
+     */
+    resolveImageIndex() {
+        if (this.percentage == 100) {
             return 5;
-        } else if(this.percentage > 80) {
+        } else if (this.percentage > 80) {
             return 4;
-        } else if(this.percentage > 60) {
+        } else if (this.percentage > 60) {
             return 3;
-        } else if(this.percentage > 40) {
+        } else if (this.percentage > 40) {
             return 2;
-        } else if(this.percentage > 20) {
+        } else if (this.percentage > 20) {
             return 1;
-        } else  {
+        } else {
             return 0;
         }
     }
