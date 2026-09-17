@@ -1,3 +1,7 @@
+/**
+ * Represents a bottle thrown by the character, including its
+ * flight, rotation, and splash animation on impact.
+ */
 class ThrowableObject extends MovableObject {
     width = 60;
     height = 80;
@@ -19,7 +23,13 @@ class ThrowableObject extends MovableObject {
         'img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png'
     ]
 
-
+    /**
+     * Creates a new throwable bottle at the given position and
+     * starts its throw motion and animation.
+     * @param {number} x - Starting x position.
+     * @param {number} y - Starting y position.
+     * @param {World} world - Reference to the game world.
+     */
     constructor(x, y, world) {
         super();
         this.world = world;
@@ -32,6 +42,10 @@ class ThrowableObject extends MovableObject {
         this.animate();
     }
 
+    /**
+     * Starts the bottle's throwing motion: applies gravity
+     * and moves it horizontally over time.
+     */
     throw() {
         this.speedY = 20;
         this.applyGravity();
@@ -40,12 +54,17 @@ class ThrowableObject extends MovableObject {
         }, 25);
     }
 
+    /**
+     * Continuously plays the rotation animation while airborne,
+     * and switches to the splash animation on ground/enemy impact.
+     */
     animate() {
         setInterval(() => {
 
             if (this.isAboveGround()) {
                 this.playAnimation(this.IMAGES_ROTATE);
-            } if (this.y >= 360 || this.isColliding(this.world.level.enemies[0])) {
+            }
+            if (this.y >= 360 || this.world.level.enemies.some(enemy => this.isColliding(enemy))) {
                 this.playAnimation(this.IMAGES_SPLASH);
             }
         }, 100);
