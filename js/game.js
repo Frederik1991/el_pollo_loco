@@ -8,12 +8,19 @@ window.addEventListener('load', () => {
     setupTouchControls();
 });
 
+/**
+ * Hides the start screen, initializes a new game, and starts the music.
+ */
 function startGame() {
     document.getElementById('startScreen').classList.add('d-none');
     init();
     SoundManager.sounds.music.play();
 }
 
+/**
+ * Stops the current game loop, hides the win/lose screens,
+ * and shows the start screen again.
+ */
 function restartGame() {
     if (world) {
         clearInterval(world.gameInterval);
@@ -24,22 +31,34 @@ function restartGame() {
     document.getElementById('startScreen').classList.remove('d-none');
 }
 
+/**
+ * Builds a fresh level and creates a new World instance.
+ */
 function init() {
     createLevel1();
     canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard);
 }
 
+/**
+ * Toggles the mute state and updates the mute button icon.
+ */
 function toggleMute() {
     SoundManager.toggleMute();
     updateMuteIcon();
 }
 
+/**
+ * Updates the mute button's icon to match the current mute state.
+ */
 function updateMuteIcon() {
     let button = document.getElementById('muteButton');
     button.textContent = SoundManager.isMuted ? '🔇' : '🔊';
 }
 
+/**
+ * Binds all touch control buttons to their matching keyboard properties.
+ */
 function setupTouchControls() {
     bindTouchButton('btnLeft', 'left');
     bindTouchButton('btnRight', 'right');
@@ -47,20 +66,37 @@ function setupTouchControls() {
     bindTouchButton('btnThrow', 'd');
 }
 
+/**
+ * Shows the story/controls info dialog.
+ */
 function openInfoDialog() {
     document.getElementById('infoDialog').classList.remove('d-none');
 }
 
+/**
+ * Hides the story/controls info dialog.
+ */
 function closeInfoDialog() {
     document.getElementById('infoDialog').classList.add('d-none');
 }
 
+/**
+ * Closes the info dialog if the click landed on the overlay itself,
+ * not inside the dialog box.
+ * @param {MouseEvent} event - The click event.
+ */
 function closeInfoDialogOnOverlay(event) {
     if (event.target.id === 'infoDialog') {
         closeInfoDialog();
     }
 }
 
+/**
+ * Binds touch start/end events for a single touch button to a
+ * keyboard property, and disables its context menu.
+ * @param {string} buttonId - The button's DOM id.
+ * @param {string} keyboardProperty - The Keyboard property to toggle.
+ */
 function bindTouchButton(buttonId, keyboardProperty) {
     let button = document.getElementById(buttonId);
 
