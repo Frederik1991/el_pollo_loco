@@ -1,3 +1,13 @@
+/**
+ * Creates a given number of objects of a class, positioned randomly
+ * within a range while keeping a minimum distance between them.
+ * @param {Function} ObjectClass - The class to instantiate.
+ * @param {number} count - Number of objects to create.
+ * @param {number} minimumDistance - Minimum distance between object positions.
+ * @param {number} minimumX - Minimum x position.
+ * @param {number} maximumX - Maximum x position.
+ * @returns {Object[]} Array of created and positioned objects.
+ */
 function createObjects(ObjectClass, count, minimumDistance, minimumX, maximumX) {
     const positions = [];
     let attempts = 0;
@@ -22,8 +32,10 @@ function createObjects(ObjectClass, count, minimumDistance, minimumX, maximumX) 
     });
 }
 
-
-
+/**
+ * Builds (or rebuilds) the global level1 instance with fresh enemies,
+ * clouds, background layers, bottles, and coins.
+ */
 function createLevel1() {
     level1 = new Level(
 
@@ -73,9 +85,7 @@ function createLevel1() {
         createObjects(Bottle, 10, 180, 50, 2350),
 
         createObjects(Coin, 10, 180, 200, 2500),
-
     );
-
 }
 
 createLevel1();
