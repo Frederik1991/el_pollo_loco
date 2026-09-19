@@ -43,23 +43,6 @@ h1 {
     aspect-ratio: 720 / 480;
 }
 
-.controls {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px 24px;
-    justify-items: center;
-    align-items: center;
-    width: 100%;
-    max-width: 720px;
-    margin: 18px auto 0;
-    color: #F8CB01;
-    font-family: 'rye', sans-serif;
-    font-size: clamp(16px, 4vw, 32px);
-    text-shadow: 4px 2px 2px rgba(0, 0, 0, 0.8);
-    box-sizing: border-box;
-    padding: 0 8px;
-}
-
 .controls span:last-child {
     grid-column: 1 / -1;
 }
