@@ -12,7 +12,6 @@ body {
 }
 
 body {
-
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -22,7 +21,7 @@ body {
     background-position: center;
     background-repeat: no-repeat;
     min-height: 100vh;
-    
+    min-height: 100dvh;
 }
 
 h1 {
@@ -202,7 +201,10 @@ canvas {
     padding: 24px 32px;
     max-width: 500px;
     width: 90%;
+    max-height: 85vh;
+    overflow-y: auto;
     font-family: 'rye', sans-serif;
+    box-sizing: border-box;
 }
 
 .dialog-close {
@@ -266,5 +268,25 @@ canvas {
         height: 100%;
         object-fit: contain;
         box-shadow: none;
+    }
+}
+
+@media (hover: none) and (pointer: coarse) {
+    body {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .impressum-button {
+        order: -1;
+        margin: 8px 0;
+    }
+
+    h1 {
+        order: 0;
+    }
+
+    .game-container {
+        order: 1;
     }
 }

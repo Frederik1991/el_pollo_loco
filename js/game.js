@@ -71,6 +71,7 @@ function setupTouchControls() {
  */
 function openInfoDialog() {
     document.getElementById('infoDialog').classList.remove('d-none');
+    document.body.style.overflow = 'hidden';
 }
 
 /**
@@ -78,6 +79,12 @@ function openInfoDialog() {
  */
 function closeInfoDialog() {
     document.getElementById('infoDialog').classList.add('d-none');
+}
+
+
+function closeInfoDialog() {
+    document.getElementById('infoDialog').classList.add('d-none');
+    document.body.style.overflow = '';
 }
 
 /**
