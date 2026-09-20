@@ -120,18 +120,21 @@ class World {
      * is available in the inventory.
      */
     checkThrowObject() {
-    let now = new Date().getTime();
-    let cooldownElapsed = now - this.lastThrowTime > this.throwCooldown;
+        let now = new Date().getTime();
+        let cooldownElapsed = now - this.lastThrowTime > this.throwCooldown;
 
-    if (this.keyboard.d && this.collectedBottles.length > 0 && cooldownElapsed) {
-        this.lastThrowTime = now;
-        this.collectedBottles.pop();
-        SoundManager.play('throwBottle');
-        this.statusBarBottle.setPercentage(this.collectedBottles.length / 10 * 100);
-        let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100, this);
-        this.throwableObject.push(bottle);
+        if (this.keyboard.d && this.collectedBottles.length > 0 && cooldownElapsed) {
+            this.lastThrowTime = now;
+            this.collectedBottles.pop();
+            SoundManager.play('throwBottle');
+            this.statusBarBottle.setPercentage(this.collectedBottles.length / 10 * 100);
+
+            let direction = this.character.otherDirection ? -1 : 1;
+            let spawnX = this.character.x + (direction === 1 ? 100 : -20);
+            let bottle = new ThrowableObject(spawnX, this.character.y + 100, this, direction);
+            this.throwableObject.push(bottle);
+        }
     }
-}
 
     /**
      * Checks collisions between the character and every living enemy.
