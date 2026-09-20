@@ -7,7 +7,7 @@ class Endboss extends MovableObject {
     width = 300;
     height = 500;
     y = -10;
-    energy = 50;
+    energy = 100;
     isAttacking = false;
     offset = {
         top: 20,
@@ -117,29 +117,28 @@ class Endboss extends MovableObject {
      * moving and pausing every few seconds until it dies.
      */
     moveLeft() {
-        this.isMoving = true;
-        this.movementStateInterval = setInterval(() => {
-            if (this.isDead()) {
-                clearInterval(this.movementStateInterval);
-                return;
-            }
-            this.isMoving = !this.isMoving;
-        }, 3000);
+    this.isMoving = true;
+    this.movementStateInterval = setInterval(() => {
+        if (this.isDead()) {
+            clearInterval(this.movementStateInterval);
+            return;
+        }
+        this.isMoving = !this.isMoving;
+    }, 3000);
 
-        this.movementInterval = setInterval(() => {
-            if (this.isDead()) {
-                this.isMoving = false;
-                clearInterval(this.movementInterval);
-                clearInterval(this.movementStateInterval);
-                return;
-            }
+    this.movementInterval = setInterval(() => {
+        if (this.isDead()) {
+            this.isMoving = false;
+            clearInterval(this.movementInterval);
+            clearInterval(this.movementStateInterval);
+            return;
+        }
 
-            if (this.isMoving) {
-                this.x -= 10;
-            }
-        }, 500);
-    }
-
+        if (this.isMoving) {
+            this.x -= 30;
+        }
+    }, 250);
+}
     /**
      * Triggers the attack animation for a fixed duration,
      * ignoring further calls while already attacking.

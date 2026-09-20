@@ -153,21 +153,26 @@ class World {
      * @param {MovableObject} enemy - The enemy the character collided with.
      */
     handleEnemyCollision(enemy) {
-        if (enemy instanceof Chicken && this.character.isFallingOn(enemy)) {
-            enemy.energy = 0;
-            this.character.jump();
-            return;
-        }
+    if (enemy instanceof Chicken && this.character.isFallingOn(enemy)) {
+        enemy.energy = 0;
+        this.character.jump();
+        return;
+    }
 
-        if (enemy instanceof Endboss) {
-            enemy.attack();
-        }
-
-        if (!this.character.isHurt()) {
-            this.character.hit();
+    if (enemy instanceof Endboss) {
+        enemy.attack();
+        if (enemy.isAttacking && !this.character.isHurt()) {
+            this.character.hit(20);
             this.statusBarHealth.setPercentage(this.character.energy);
         }
+        return;
     }
+
+    if (!this.character.isHurt()) {
+        this.character.hit();
+        this.statusBarHealth.setPercentage(this.character.energy);
+    }
+}
 
     /**
      * Checks whether the character collects any bottles lying

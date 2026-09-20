@@ -104,11 +104,12 @@ class MovableObject extends DrawableObject {
     }
 
     /**
-     * Reduces the object's energy when hit, plays a hurt sound,
-     * and updates the last-hit timestamp.
-     */
-    hit() {
-        this.energy -= 5;
+ * Reduces the object's energy when hit, plays a hurt sound,
+ * and updates the last-hit timestamp.
+ * @param {number} amount - How much energy to remove (default 5).
+ */
+    hit(amount = 5) {
+        this.energy -= amount;
         if (this.energy < 0) {
             this.energy = 0;
         } else {
