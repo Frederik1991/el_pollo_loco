@@ -76,6 +76,7 @@ class Character extends MovableObject {
         'img/2_character_pepe/1_idle/long_idle/I-20.png'
     ];
 
+    currentDeadFrame = 0;
     currentJumpFrame = 0;
     jumpFrameCounter = 0;
     lastActionTime = new Date().getTime();
@@ -164,13 +165,13 @@ class Character extends MovableObject {
      * is currently on the ground.
      */
     handleJumpInput() {
-    if (this.world.keyboard.space && !this.isAboveGround()) {
-        this.currentJumpFrame = 0;
-        this.jumpFrameCounter = 0;
-        this.jump();
-        this.lastActionTime = new Date().getTime();
+        if (this.world.keyboard.space && !this.isAboveGround()) {
+            this.currentJumpFrame = 0;
+            this.jumpFrameCounter = 0;
+            this.jump();
+            this.lastActionTime = new Date().getTime();
+        }
     }
-}
 
     /**
      * Selects and plays the correct animation based on the
@@ -180,7 +181,7 @@ class Character extends MovableObject {
         if (this.isHurt()) {
             this.playAnimation(this.IMAGES_HURT);
         } else if (this.isDead()) {
-            this.playAnimation(this.IMAGES_DEAD);
+            this.playDeadAnimationOnce();
         } else if (this.isAboveGround()) {
             this.playJumpAnimationOnce();
         } else if (this.world.keyboard.right || this.world.keyboard.left) {
@@ -205,6 +206,17 @@ class Character extends MovableObject {
         }
 
         this.img = this.imageCache[this.IMAGES_JUMPING[this.currentJumpFrame]];
+    }
+
+    /**
+ * Plays the death animation once, holding the last frame
+ * instead of looping.
+ */
+    playDeadAnimationOnce() {
+        if (this.currentDeadFrame < this.IMAGES_DEAD.length - 1) {
+            this.currentDeadFrame++;
+        }
+        this.img = this.imageCache[this.IMAGES_DEAD[this.currentDeadFrame]];
     }
 
     /**

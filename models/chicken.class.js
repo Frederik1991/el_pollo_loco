@@ -1,3 +1,6 @@
+/**
+ * Represents a basic walking chicken enemy that follows the character.
+ */
 class Chicken extends MovableObject {
 
     y = 360;
