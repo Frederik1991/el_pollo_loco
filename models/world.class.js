@@ -211,14 +211,14 @@ class World {
      * bottles, coins, thrown bottles) within the camera transform.
      */
     drawLevelObjects() {
-        this.addObjectsToMap(this.level.backgroundObjects);
-        this.addToMap(this.character);
-        this.addObjectsToMap(this.level.enemies);
-        this.addObjectsToMap(this.level.clouds);
-        this.addObjectsToMap(this.level.bottles);
-        this.addObjectsToMap(this.level.coins);
-        this.addObjectsToMap(this.throwableObject);
-    }
+    this.addObjectsToMap(this.level.backgroundObjects);
+    this.addObjectsToMap(this.level.enemies);
+    this.addToMap(this.character);
+    this.addObjectsToMap(this.level.clouds);
+    this.addObjectsToMap(this.level.bottles);
+    this.addObjectsToMap(this.level.coins);
+    this.addObjectsToMap(this.throwableObject);
+}
 
     /**
      * Draws the fixed-position status bars.
