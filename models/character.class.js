@@ -76,6 +76,8 @@ class Character extends MovableObject {
         'img/2_character_pepe/1_idle/long_idle/I-20.png'
     ];
 
+    currentJumpFrame = 0;
+    jumpFrameCounter = 0;
     lastActionTime = new Date().getTime();
     world;
 
@@ -162,11 +164,13 @@ class Character extends MovableObject {
      * is currently on the ground.
      */
     handleJumpInput() {
-        if (this.world.keyboard.space && !this.isAboveGround()) {
-            this.jump();
-            this.lastActionTime = new Date().getTime();
-        }
+    if (this.world.keyboard.space && !this.isAboveGround()) {
+        this.currentJumpFrame = 0;
+        this.jumpFrameCounter = 0;
+        this.jump();
+        this.lastActionTime = new Date().getTime();
     }
+}
 
     /**
      * Selects and plays the correct animation based on the
@@ -178,7 +182,7 @@ class Character extends MovableObject {
         } else if (this.isDead()) {
             this.playAnimation(this.IMAGES_DEAD);
         } else if (this.isAboveGround()) {
-            this.playAnimation(this.IMAGES_JUMPING);
+            this.playJumpAnimationOnce();
         } else if (this.world.keyboard.right || this.world.keyboard.left) {
             this.playWalkingAnimation();
         } else if (this.isLongIdle()) {
@@ -186,6 +190,21 @@ class Character extends MovableObject {
         } else {
             this.playAnimation(this.IMAGES_IDLE);
         }
+    }
+
+    /**
+  * Plays the jump animation once, at a slower pace than the
+  * regular animation tick, holding the last frame until landing.
+  */
+    playJumpAnimationOnce() {
+        this.jumpFrameCounter++;
+
+        if (this.jumpFrameCounter >= 3 && this.currentJumpFrame < this.IMAGES_JUMPING.length - 1) {
+            this.currentJumpFrame++;
+            this.jumpFrameCounter = 0;
+        }
+
+        this.img = this.imageCache[this.IMAGES_JUMPING[this.currentJumpFrame]];
     }
 
     /**
