@@ -306,5 +306,9 @@ canvas {
         right: 64px;
         transform: none;
     }
+
+    .impressum-button.hide-during-game {
+        display: none;
+    }
 }
 

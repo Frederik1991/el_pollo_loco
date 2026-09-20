@@ -13,6 +13,7 @@ window.addEventListener('load', () => {
  */
 function startGame() {
     document.getElementById('startScreen').classList.add('d-none');
+    document.getElementById('impressumButton').classList.add('hide-during-game');
     init();
     SoundManager.sounds.music.play();
 }
@@ -29,6 +30,7 @@ function restartGame() {
     document.getElementById('winScreen').classList.add('d-none');
     document.getElementById('loseScreen').classList.add('d-none');
     document.getElementById('startScreen').classList.remove('d-none');
+    document.getElementById('impressumButton').classList.remove('hide-during-game');
 }
 
 /**
