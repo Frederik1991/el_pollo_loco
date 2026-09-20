@@ -15,6 +15,8 @@ class World {
     throwableObject = [];
     collectedBottles = [];
     collectedCoins = [];
+    lastThrowTime = 0;
+    throwCooldown = 800; // Millisekunden zwischen zwei Würfen
 
     /**
      * Creates the game world and starts drawing, world-linking,
@@ -118,14 +120,18 @@ class World {
      * is available in the inventory.
      */
     checkThrowObject() {
-        if (this.keyboard.d && this.collectedBottles.length > 0) {
-            this.collectedBottles.pop();
-            SoundManager.play('throwBottle');
-            this.statusBarBottle.setPercentage(this.collectedBottles.length / 10 * 100);
-            let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100, this);
-            this.throwableObject.push(bottle);
-        }
+    let now = new Date().getTime();
+    let cooldownElapsed = now - this.lastThrowTime > this.throwCooldown;
+
+    if (this.keyboard.d && this.collectedBottles.length > 0 && cooldownElapsed) {
+        this.lastThrowTime = now;
+        this.collectedBottles.pop();
+        SoundManager.play('throwBottle');
+        this.statusBarBottle.setPercentage(this.collectedBottles.length / 10 * 100);
+        let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100, this);
+        this.throwableObject.push(bottle);
     }
+}
 
     /**
      * Checks collisions between the character and every living enemy.
@@ -211,14 +217,14 @@ class World {
      * bottles, coins, thrown bottles) within the camera transform.
      */
     drawLevelObjects() {
-    this.addObjectsToMap(this.level.backgroundObjects);
-    this.addObjectsToMap(this.level.enemies);
-    this.addToMap(this.character);
-    this.addObjectsToMap(this.level.clouds);
-    this.addObjectsToMap(this.level.bottles);
-    this.addObjectsToMap(this.level.coins);
-    this.addObjectsToMap(this.throwableObject);
-}
+        this.addObjectsToMap(this.level.backgroundObjects);
+        this.addObjectsToMap(this.level.enemies);
+        this.addToMap(this.character);
+        this.addObjectsToMap(this.level.clouds);
+        this.addObjectsToMap(this.level.bottles);
+        this.addObjectsToMap(this.level.coins);
+        this.addObjectsToMap(this.throwableObject);
+    }
 
     /**
      * Draws the fixed-position status bars.
