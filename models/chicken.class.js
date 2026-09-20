@@ -1,6 +1,3 @@
-/**
- * Represents a basic walking chicken enemy.
- */
 class Chicken extends MovableObject {
 
     y = 360;
@@ -8,6 +5,7 @@ class Chicken extends MovableObject {
     height = 70;
     speed = 0.15;
     otherDirection = false;
+    world;
     offset = {
         top: 8,
         right: 5,
@@ -32,23 +30,42 @@ class Chicken extends MovableObject {
         super().loadImage('img/3_enemies_chicken/chicken_normal/1_walk/1_w.png');
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_DEAD);
-        this.speed = 0.15 + Math.random() * 0.5; // Random speed between 0.15 and 0.65
-        this.x = 1000 + Math.random() * 1000; // Random x position between 200 and 700
+        this.speed = 0.15 + Math.random() * 0.5;
+        this.x = 1000 + Math.random() * 1000;
         this.animate();
     }
 
     /**
-     * Continuously moves and animates the chicken while alive,
-     * or shows the dead frame once its energy reaches zero.
+     * Continuously moves and animates the chicken toward the character
+     * while alive, or shows the dead frame once its energy reaches zero.
      */
     animate() {
         setInterval(() => {
             if (!this.isDead()) {
-                this.moveLeft();
+                this.followCharacter();
                 this.playAnimation(this.IMAGES_WALKING);
             } else {
                 this.img = this.imageCache[this.IMAGES_DEAD[0]];
             }
         }, 1000 / 200);
+    }
+
+    /**
+     * Moves the chicken toward the character's current x position,
+     * flipping its direction as needed.
+     */
+    followCharacter() {
+        if (!this.world) {
+            this.moveLeft();
+            return;
+        }
+
+        if (this.world.character.x < this.x) {
+            this.otherDirection = false;
+            this.moveLeft();
+        } else {
+            this.otherDirection = true;
+            this.moveRight();
+        }
     }
 }

@@ -37,13 +37,11 @@ class World {
      * Gives the character and the endboss a reference back to this world.
      */
     setWorld() {
-        this.character.world = this;
-        this.level.enemies.forEach((enemy) => {
-            if (enemy instanceof Endboss) {
-                enemy.world = this;
-            }
-        });
-    }
+    this.character.world = this;
+    this.level.enemies.forEach((enemy) => {
+        enemy.world = this;
+    });
+}
 
     /**
      * Starts the main game loop, running all collision and status checks.

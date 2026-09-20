@@ -113,32 +113,46 @@ class Endboss extends MovableObject {
     }
 
     /**
-     * Starts the endboss's leftward movement, alternating between
-     * moving and pausing every few seconds until it dies.
-     */
+  * Starts the endboss's movement toward the character, alternating
+  * between moving and pausing every few seconds until it dies.
+  */
     moveLeft() {
-    this.isMoving = true;
-    this.movementStateInterval = setInterval(() => {
-        if (this.isDead()) {
-            clearInterval(this.movementStateInterval);
-            return;
-        }
-        this.isMoving = !this.isMoving;
-    }, 3000);
+        this.isMoving = true;
+        this.movementStateInterval = setInterval(() => {
+            if (this.isDead()) {
+                clearInterval(this.movementStateInterval);
+                return;
+            }
+            this.isMoving = !this.isMoving;
+        }, 3000);
 
-    this.movementInterval = setInterval(() => {
-        if (this.isDead()) {
-            this.isMoving = false;
-            clearInterval(this.movementInterval);
-            clearInterval(this.movementStateInterval);
-            return;
-        }
+        this.movementInterval = setInterval(() => {
+            if (this.isDead()) {
+                this.isMoving = false;
+                clearInterval(this.movementInterval);
+                clearInterval(this.movementStateInterval);
+                return;
+            }
 
-        if (this.isMoving) {
-            this.x -= 30;
+            if (this.isMoving) {
+                this.followCharacter();
+            }
+        }, 150);
+    }
+
+    /**
+     * Moves the endboss toward the character's current x position,
+     * flipping its direction as needed.
+     */
+    followCharacter() {
+        if (this.world.character.x < this.x) {
+            this.otherDirection = false;
+            this.x -= 12;
+        } else {
+            this.otherDirection = true;
+            this.x += 40;
         }
-    }, 250);
-}
+    }
     /**
      * Triggers the attack animation for a fixed duration,
      * ignoring further calls while already attacking.
