@@ -23,26 +23,38 @@ class ThrowableObject extends MovableObject {
         'img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png'
     ]
 
-   constructor(x, y, world, direction = 1) {
-    super();
-    this.world = world;
-    this.direction = direction;
-    this.loadImage('img/6_salsa_bottle/salsa_bottle.png')
-    this.loadImages(this.IMAGES_ROTATE);
-    this.loadImages(this.IMAGES_SPLASH);
-    this.y = y;
-    this.x = x;
-    this.throw();
-    this.animate();
-}
+    /**
+     * Creates a new throwable bottle at the given position and
+     * starts its throw motion and animation.
+     * @param {number} x - Starting x position.
+     * @param {number} y - Starting y position.
+     * @param {World} world - Reference to the game world.
+     * @param {number} [direction=1] - Horizontal throw direction (1 = right, -1 = left).
+     */
+    constructor(x, y, world, direction = 1) {
+        super();
+        this.world = world;
+        this.direction = direction;
+        this.loadImage('img/6_salsa_bottle/salsa_bottle.png')
+        this.loadImages(this.IMAGES_ROTATE);
+        this.loadImages(this.IMAGES_SPLASH);
+        this.y = y;
+        this.x = x;
+        this.throw();
+        this.animate();
+    }
 
-throw() {
-    this.speedY = 20;
-    this.applyGravity();
-    setInterval(() => {
-        this.x += 10 * this.direction;
-    }, 25);
-}
+    /**
+     * Starts the bottle's throwing motion: applies gravity
+     * and moves it horizontally in the given direction over time.
+     */
+    throw() {
+        this.speedY = 20;
+        this.applyGravity();
+        setInterval(() => {
+            this.x += 10 * this.direction;
+        }, 25);
+    }
 
     /**
      * Continuously plays the rotation animation while airborne,
