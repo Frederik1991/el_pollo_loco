@@ -5,6 +5,12 @@ class Bottle extends MovableObject {
 
     width = 60; // Set a fixed width for Bottles
     height = 80; // Set a fixed height for Bottles
+    offset = {
+        top: 10,
+        right: 10,
+        bottom: 5,
+        left: 10,
+    };
 
     /**
      * Creates a new bottle at a random x position near the ground.
