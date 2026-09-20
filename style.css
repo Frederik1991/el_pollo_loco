@@ -85,12 +85,6 @@ canvas {
     z-index: 0;
 }
 
-.impressum-button {
-    font-size: 12px;
-    padding: 8px 16px;
-    margin-top: 12px;
-}
-
 .button {
     position: relative;
     z-index: 1;
@@ -106,6 +100,16 @@ canvas {
     margin: 4px 2px;
     cursor: pointer;
     font-family: 'rye', sans-serif;
+}
+
+.impressum-button {
+    position: absolute;
+    bottom: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 12px;
+    padding: 8px 16px;
+    z-index: 2;
 }
 
 .mute-button {
@@ -218,6 +222,22 @@ canvas {
     cursor: pointer;
 }
 
+.impressum-content {
+    color: #F8CB01;
+    text-align: center;
+    max-width: 600px;
+    width: 90%;
+    margin: 20px auto;
+    font-size: clamp(14px, 4vw, 20px);
+    padding: 0 12px;
+    box-sizing: border-box;
+}
+
+.impressum-content a {
+    color: white;
+    word-break: break-word;
+}
+
 /* Touch-Buttons nur auf Tablet/Handy zeigen */
 @media (hover: none) and (pointer: coarse) {
     .touch-controls {
@@ -271,22 +291,20 @@ canvas {
     }
 }
 
-@media (hover: none) and (pointer: coarse) {
-    body {
+@media (hover: none) and (pointer: coarse), (max-width: 768px) {
+    .touch-controls {
         display: flex;
-        flex-direction: column;
     }
 
+    .keyboard-controls {
+        display: none;
+    }
     .impressum-button {
-        order: -1;
-        margin: 8px 0;
-    }
-
-    h1 {
-        order: 0;
-    }
-
-    .game-container {
-        order: 1;
+        top: 12px;
+        bottom: auto;
+        left: auto;
+        right: 64px;
+        transform: none;
     }
 }
+
