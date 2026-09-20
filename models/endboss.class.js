@@ -147,10 +147,10 @@ class Endboss extends MovableObject {
     followCharacter() {
         if (this.world.character.x < this.x) {
             this.otherDirection = false;
-            this.x -= 12;
+            this.x -= 30;
         } else {
             this.otherDirection = true;
-            this.x += 40;
+            this.x += 30;
         }
     }
     /**
