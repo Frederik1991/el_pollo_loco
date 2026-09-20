@@ -268,7 +268,7 @@ canvas {
         display: none;
     }
 
-    body {
+    body.game-page {
         display: flex;
         justify-content: center;
         align-items: center;
