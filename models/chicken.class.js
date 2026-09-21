@@ -63,10 +63,23 @@ class Chicken extends MovableObject {
             return;
         }
 
+        // Berechne den Abstand zwischen Gegner und Charakter
+        const abstand = this.world.character.x - this.x;
+        const toleranz = 5; // Abstand in Pixeln, ab dem der Gegner stoppt (Wert anpassen!)
+
+        // Wenn der Gegner nah genug dran ist, tu nichts (stoppen)
+        if (Math.abs(abstand) <= toleranz) {
+            // Optional: Hier kannst du eine Idle-Animation abspielen oder den Angriff starten
+            return;
+        }
+
+        // Wenn der Charakter weiter links ist als die Toleranz erlaubt
         if (this.world.character.x < this.x) {
             this.otherDirection = false;
             this.moveLeft();
-        } else {
+        }
+        // Wenn der Charakter weiter rechts ist als die Toleranz erlaubt
+        else if (this.world.character.x > this.x) {
             this.otherDirection = true;
             this.moveRight();
         }

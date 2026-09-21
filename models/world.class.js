@@ -126,7 +126,6 @@ class World {
             this.collectedBottles.pop();
             SoundManager.play('throwBottle');
             this.statusBarBottle.setPercentage(this.collectedBottles.length / 20 * 100);
-
             let direction = this.character.otherDirection ? -1 : 1;
             let spawnX = this.character.x + (direction === 1 ? 100 : -20);
             let bottle = new ThrowableObject(spawnX, this.character.y + 100, this, direction);
@@ -228,8 +227,8 @@ draw() {
  */
 drawLevelObjects() {
     this.addObjectsToMap(this.level.backgroundObjects);
-    this.addObjectsToMap(this.level.enemies);
     this.addObjectsToMap(this.level.clouds);
+    this.addObjectsToMap(this.level.enemies);
     this.addObjectsToMap(this.level.bottles);
     this.addObjectsToMap(this.level.coins);
     this.addObjectsToMap(this.throwableObject);
