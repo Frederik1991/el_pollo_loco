@@ -22,6 +22,14 @@ class SoundManager {
      */
     static init() {
         this.sounds.music.loop = true;
+        this.sounds.music.volume = 0.1;
+        this.sounds.jump.volume = 0.5;
+        this.sounds.hurt.volume = 0.5;
+        this.sounds.throwBottle.volume = 0.5;
+        this.sounds.bottleBreak.volume = 0.5;
+        this.sounds.collectCoin.volume = 0.4;
+        this.sounds.win.volume = 0.6;
+        this.sounds.gameOver.volume = 0.6;
         this.applyMuteState();
     }
 
