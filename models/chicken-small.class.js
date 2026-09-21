@@ -27,6 +27,6 @@ class ChickenSmall extends Chicken {
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_DEAD);
         this.speed = 0.3 + Math.random() * 0.6; // etwas schneller als normale Chicken
-        this.x = 700 + Math.random() * 4000;
+        this.x = 1500 + Math.random() * 4000;
     }
 }
