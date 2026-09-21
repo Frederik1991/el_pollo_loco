@@ -42,14 +42,6 @@ h1 {
     aspect-ratio: 720 / 480;
 }
 
-.controls span:last-child {
-    grid-column: 1 / -1;
-}
-
-.controls strong {
-    color: white;
-}
-
 canvas {
     display: block;
     width: 100%;
@@ -161,8 +153,7 @@ canvas {
     user-select: none;
 }
 
-.throw-buttio-img {
-    width: 50px;
+.throw-button-img {
     margin-left: -12px;
     width: 100%;
     height: 100%;
