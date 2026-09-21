@@ -125,7 +125,7 @@ class World {
             this.lastThrowTime = now;
             this.collectedBottles.pop();
             SoundManager.play('throwBottle');
-            this.statusBarBottle.setPercentage(this.collectedBottles.length / 10 * 100);
+            this.statusBarBottle.setPercentage(this.collectedBottles.length / 20 * 100);
 
             let direction = this.character.otherDirection ? -1 : 1;
             let spawnX = this.character.x + (direction === 1 ? 100 : -20);
@@ -180,7 +180,7 @@ class World {
         this.level.bottles.forEach((bottle, index) => {
             if (this.character.isColliding(bottle)) {
                 this.collectedBottles.push(bottle);
-                this.statusBarBottle.setPercentage(this.collectedBottles.length / 10 * 100);
+                this.statusBarBottle.setPercentage(this.collectedBottles.length / 20 * 100);
                 this.level.bottles.splice(index, 1);
             }
         });
@@ -194,7 +194,7 @@ class World {
         this.level.coins.forEach((coin, index) => {
             if (this.character.isColliding(coin)) {
                 this.collectedCoins.push(coin);
-                this.statusBarCoin.setPercentage(this.collectedCoins.length / 10 * 100);
+                this.statusBarCoin.setPercentage(this.collectedCoins.length / 20 * 100);
                 this.level.coins.splice(index, 1);
                 SoundManager.play('collectCoin');
             }
