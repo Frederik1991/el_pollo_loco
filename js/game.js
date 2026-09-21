@@ -77,13 +77,8 @@ function openInfoDialog() {
 }
 
 /**
- * Hides the story/controls info dialog.
+ * Hides the story/controls info dialog and restores background scrolling.
  */
-function closeInfoDialog() {
-    document.getElementById('infoDialog').classList.add('d-none');
-}
-
-
 function closeInfoDialog() {
     document.getElementById('infoDialog').classList.add('d-none');
     document.body.style.overflow = '';
