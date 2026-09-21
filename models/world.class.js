@@ -202,35 +202,38 @@ class World {
     }
 
     /**
-     * Clears and redraws the entire canvas, then schedules
-     * the next animation frame.
-     */
-    draw() {
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.ctx.translate(this.camera_x, 0);
-        this.drawLevelObjects();
-        this.ctx.translate(-this.camera_x, 0);
-        this.drawStatusBars();
+ * Clears and redraws the entire canvas, then schedules
+ * the next animation frame.
+ */
+draw() {
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.ctx.translate(this.camera_x, 0);
+    this.drawLevelObjects();
+    this.ctx.translate(-this.camera_x, 0);
+    this.drawStatusBars();
+    this.ctx.translate(this.camera_x, 0);
+    this.addToMap(this.character);
+    this.ctx.translate(-this.camera_x, 0);
 
-        self = this;
-        this.animationFrame = requestAnimationFrame(function () {
-            self.draw()
-        });
-    }
+    self = this;
+    this.animationFrame = requestAnimationFrame(function () {
+        self.draw()
+    });
+}
 
     /**
-     * Draws the character and all level objects (enemies, clouds,
-     * bottles, coins, thrown bottles) within the camera transform.
-     */
-    drawLevelObjects() {
-        this.addObjectsToMap(this.level.backgroundObjects);
-        this.addObjectsToMap(this.level.enemies);
-        this.addToMap(this.character);
-        this.addObjectsToMap(this.level.clouds);
-        this.addObjectsToMap(this.level.bottles);
-        this.addObjectsToMap(this.level.coins);
-        this.addObjectsToMap(this.throwableObject);
-    }
+ * Draws all level objects (background, enemies, clouds, bottles,
+ * coins, thrown bottles) within the camera transform, excluding
+ * the character (drawn separately on top).
+ */
+drawLevelObjects() {
+    this.addObjectsToMap(this.level.backgroundObjects);
+    this.addObjectsToMap(this.level.enemies);
+    this.addObjectsToMap(this.level.clouds);
+    this.addObjectsToMap(this.level.bottles);
+    this.addObjectsToMap(this.level.coins);
+    this.addObjectsToMap(this.throwableObject);
+}
 
     /**
      * Draws the fixed-position status bars.
