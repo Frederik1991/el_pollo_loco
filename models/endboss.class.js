@@ -60,8 +60,10 @@ class Endboss extends MovableObject {
     ]
 
     isMoving = false;
+    animationInterval;
     movementInterval;
     movementStateInterval;
+    readyCheckInterval;
 
     /**
      * Creates the endboss, loads all animation images,
@@ -84,7 +86,7 @@ class Endboss extends MovableObject {
      * based on the endboss's current state.
      */
     animate() {
-        setInterval(() => {
+        this.animationInterval = setInterval(() => {
             if (this.isDead()) {
                 this.playAnimation(this.IMAGES_DEAD);
             } else if (this.isHurt()) {
@@ -99,14 +101,40 @@ class Endboss extends MovableObject {
         }, 100);
     }
 
+    stopAnimations() {
+        clearInterval(this.animationInterval);
+        clearInterval(this.movementInterval);
+        clearInterval(this.movementStateInterval);
+        clearInterval(this.readyCheckInterval);
+        this.isMoving = false;
+        this.isAttacking = false;
+    }
+
+    playDeathAnimationOnce(onComplete) {
+        this.stopAnimations();
+        this.currentImageIndex = 0;
+        this.img = this.imageCache[this.IMAGES_DEAD[0]];
+        this.animationInterval = setInterval(() => {
+            if (this.currentImageIndex >= this.IMAGES_DEAD.length - 1) {
+                clearInterval(this.animationInterval);
+                if (onComplete) {
+                    onComplete();
+                }
+                return;
+            }
+            this.currentImageIndex++;
+            this.img = this.imageCache[this.IMAGES_DEAD[this.currentImageIndex]];
+        }, 100);
+    }
+
     /**
      * Waits until the character has reached a certain x position,
      * then triggers the endboss to start moving left.
      */
     startMovingWhenReady() {
-        let checkInterval = setInterval(() => {
+        this.readyCheckInterval = setInterval(() => {
             if (this.world && this.world.character.x > 4000) {
-                clearInterval(checkInterval);
+                clearInterval(this.readyCheckInterval);
                 this.moveLeft();
             }
         }, 100);

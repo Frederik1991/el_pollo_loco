@@ -25,6 +25,8 @@ class Chicken extends MovableObject {
         'img/3_enemies_chicken/chicken_normal/2_dead/dead.png'
     ]
 
+    animationInterval;
+
     /**
      * Creates a new chicken with a randomized speed and starting position,
      * loads its images, and starts its animation loop.
@@ -43,7 +45,7 @@ class Chicken extends MovableObject {
      * while alive, or shows the dead frame once its energy reaches zero.
      */
     animate() {
-        setInterval(() => {
+        this.animationInterval = setInterval(() => {
             if (!this.isDead()) {
                 this.followCharacter();
                 this.playAnimation(this.IMAGES_WALKING);
@@ -51,6 +53,10 @@ class Chicken extends MovableObject {
                 this.img = this.imageCache[this.IMAGES_DEAD[0]];
             }
         }, 1000 / 200);
+    }
+
+    stopAnimations() {
+        clearInterval(this.animationInterval);
     }
 
     /**

@@ -67,15 +67,26 @@ class World {
         }
         if (this.character.isDead()) {
             this.gameEnded = true;
+            this.stopEnemyAnimations();
             this.showLoseScreen();
             SoundManager.play('gameOver');
             SoundManager.sounds.music.pause();
         } else if (this.level.enemies.some(e => e instanceof Endboss && e.isDead())) {
             this.gameEnded = true;
-            this.showWinScreen();
+            this.stopEnemyAnimations();
+            const endboss = this.level.enemies.find(e => e instanceof Endboss);
+            endboss.playDeathAnimationOnce(() => this.showWinScreen());
             SoundManager.play('win');
             SoundManager.sounds.music.pause();
         }
+    }
+
+    stopEnemyAnimations() {
+        this.level.enemies.forEach((enemy) => {
+            if (enemy instanceof Chicken || enemy instanceof Endboss) {
+                enemy.stopAnimations();
+            }
+        });
     }
 
     /**
