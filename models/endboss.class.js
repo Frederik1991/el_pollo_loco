@@ -101,6 +101,10 @@ class Endboss extends MovableObject {
         }, 100);
     }
 
+    /**
+     * Stops all running intervals (animation, movement, ready-check)
+     * and resets the moving/attacking flags.
+     */
     stopAnimations() {
         clearInterval(this.animationInterval);
         clearInterval(this.movementInterval);
@@ -110,6 +114,11 @@ class Endboss extends MovableObject {
         this.isAttacking = false;
     }
 
+    /**
+     * Stops all other animations/intervals and plays the death
+     * animation once, calling the given callback when it finishes.
+     * @param {Function} [onComplete] - Called after the last death frame is shown.
+     */
     playDeathAnimationOnce(onComplete) {
         this.stopAnimations();
         this.currentImageIndex = 0;
@@ -141,9 +150,9 @@ class Endboss extends MovableObject {
     }
 
     /**
-  * Starts the endboss's movement toward the character, alternating
-  * between moving and pausing every few seconds until it dies.
-  */
+     * Starts the endboss's movement toward the character, alternating
+     * between moving and pausing every few seconds until it dies.
+     */
     moveLeft() {
         this.isMoving = true;
         this.movementStateInterval = setInterval(() => {
@@ -181,6 +190,7 @@ class Endboss extends MovableObject {
             this.x += 30;
         }
     }
+
     /**
      * Triggers the attack animation for a fixed duration,
      * ignoring further calls while already attacking.
