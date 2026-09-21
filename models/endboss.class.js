@@ -74,7 +74,7 @@ class Endboss extends MovableObject {
         this.loadImages(this.IMAGES_ATTACK);
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_DEAD);
-        this.x = 2500
+        this.x = 5000
         this.animate();
         this.startMovingWhenReady();
     }
@@ -105,7 +105,7 @@ class Endboss extends MovableObject {
      */
     startMovingWhenReady() {
         let checkInterval = setInterval(() => {
-            if (this.world && this.world.character.x > 1800) {
+            if (this.world && this.world.character.x > 4000) {
                 clearInterval(checkInterval);
                 this.moveLeft();
             }
