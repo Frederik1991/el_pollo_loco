@@ -7,7 +7,7 @@ class ChickenSmall extends Chicken {
     width = 50;
     height = 55;
     offset = {
-        top: 8,
+        top: 3,
         right: 5,
         bottom: 2,
         left: 5,
