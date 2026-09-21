@@ -37,11 +37,11 @@ class World {
      * Gives the character and the endboss a reference back to this world.
      */
     setWorld() {
-    this.character.world = this;
-    this.level.enemies.forEach((enemy) => {
-        enemy.world = this;
-    });
-}
+        this.character.world = this;
+        this.level.enemies.forEach((enemy) => {
+            enemy.world = this;
+        });
+    }
 
     /**
      * Starts the main game loop, running all collision and status checks.
@@ -81,6 +81,10 @@ class World {
         }
     }
 
+    /**
+     * Stops all running animations/intervals for chickens and the endboss,
+     * e.g. once the game has ended.
+     */
     stopEnemyAnimations() {
         this.level.enemies.forEach((enemy) => {
             if (enemy instanceof Chicken || enemy instanceof Endboss) {
@@ -161,26 +165,26 @@ class World {
      * @param {MovableObject} enemy - The enemy the character collided with.
      */
     handleEnemyCollision(enemy) {
-    if (enemy instanceof Chicken && this.character.isFallingOn(enemy)) {
-        enemy.energy = 0;
-        this.character.jump();
-        return;
-    }
+        if (enemy instanceof Chicken && this.character.isFallingOn(enemy)) {
+            enemy.energy = 0;
+            this.character.jump();
+            return;
+        }
 
-    if (enemy instanceof Endboss) {
-        enemy.attack();
-        if (enemy.isAttacking && !this.character.isHurt()) {
-            this.character.hit(20);
+        if (enemy instanceof Endboss) {
+            enemy.attack();
+            if (enemy.isAttacking && !this.character.isHurt()) {
+                this.character.hit(20);
+                this.statusBarHealth.setPercentage(this.character.energy);
+            }
+            return;
+        }
+
+        if (!this.character.isHurt()) {
+            this.character.hit();
             this.statusBarHealth.setPercentage(this.character.energy);
         }
-        return;
     }
-
-    if (!this.character.isHurt()) {
-        this.character.hit();
-        this.statusBarHealth.setPercentage(this.character.energy);
-    }
-}
 
     /**
      * Checks whether the character collects any bottles lying
@@ -212,38 +216,38 @@ class World {
     }
 
     /**
- * Clears and redraws the entire canvas, then schedules
- * the next animation frame.
- */
-draw() {
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    this.ctx.translate(this.camera_x, 0);
-    this.drawLevelObjects();
-    this.ctx.translate(-this.camera_x, 0);
-    this.drawStatusBars();
-    this.ctx.translate(this.camera_x, 0);
-    this.addToMap(this.character);
-    this.ctx.translate(-this.camera_x, 0);
+     * Clears and redraws the entire canvas, then schedules
+     * the next animation frame.
+     */
+    draw() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.ctx.translate(this.camera_x, 0);
+        this.drawLevelObjects();
+        this.ctx.translate(-this.camera_x, 0);
+        this.drawStatusBars();
+        this.ctx.translate(this.camera_x, 0);
+        this.addToMap(this.character);
+        this.ctx.translate(-this.camera_x, 0);
 
-    self = this;
-    this.animationFrame = requestAnimationFrame(function () {
-        self.draw()
-    });
-}
+        self = this;
+        this.animationFrame = requestAnimationFrame(function () {
+            self.draw()
+        });
+    }
 
     /**
- * Draws all level objects (background, enemies, clouds, bottles,
- * coins, thrown bottles) within the camera transform, excluding
- * the character (drawn separately on top).
- */
-drawLevelObjects() {
-    this.addObjectsToMap(this.level.backgroundObjects);
-    this.addObjectsToMap(this.level.clouds);
-    this.addObjectsToMap(this.level.enemies);
-    this.addObjectsToMap(this.level.bottles);
-    this.addObjectsToMap(this.level.coins);
-    this.addObjectsToMap(this.throwableObject);
-}
+     * Draws all level objects (background, clouds, enemies, bottles,
+     * coins, thrown bottles) within the camera transform, excluding
+     * the character (drawn separately on top).
+     */
+    drawLevelObjects() {
+        this.addObjectsToMap(this.level.backgroundObjects);
+        this.addObjectsToMap(this.level.clouds);
+        this.addObjectsToMap(this.level.enemies);
+        this.addObjectsToMap(this.level.bottles);
+        this.addObjectsToMap(this.level.coins);
+        this.addObjectsToMap(this.throwableObject);
+    }
 
     /**
      * Draws the fixed-position status bars.
@@ -278,7 +282,7 @@ drawLevelObjects() {
         }
 
         mo.draw(this.ctx)
-        mo.drawFrame(this.ctx)
+        // mo.drawFrame(this.ctx)
 
         if (mo.otherDirection) {
             mo.x = mo.x * -1;
