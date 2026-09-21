@@ -99,6 +99,15 @@ class Character extends MovableObject {
     }
 
     /**
+     * Starts a jump and resets the jump animation to its first frame.
+     */
+    jump() {
+        this.currentJumpFrame = 0;
+        this.jumpFrameCounter = 0;
+        super.jump();
+    }
+
+    /**
      * Checks whether the character is currently falling onto the
      * top side of a given movable object (used for jump-kill logic).
      * @param {MovableObject} mo - The object to check against.
@@ -127,7 +136,7 @@ class Character extends MovableObject {
 
         setInterval(() => {
             this.handleAnimationState();
-        }, 50);
+        }, 1000 / 10);
     }
 
     /**
@@ -166,8 +175,6 @@ class Character extends MovableObject {
      */
     handleJumpInput() {
         if (this.world.keyboard.space && !this.isAboveGround()) {
-            this.currentJumpFrame = 0;
-            this.jumpFrameCounter = 0;
             this.jump();
             this.lastActionTime = new Date().getTime();
         }
@@ -194,13 +201,13 @@ class Character extends MovableObject {
     }
 
     /**
-  * Plays the jump animation once, at a slower pace than the
-  * regular animation tick, holding the last frame until landing.
+    * Plays the jump animation once, advancing one frame per
+    * animation tick and holding the last frame until landing.
   */
     playJumpAnimationOnce() {
         this.jumpFrameCounter++;
 
-        if (this.jumpFrameCounter >= 3 && this.currentJumpFrame < this.IMAGES_JUMPING.length - 1) {
+        if (this.jumpFrameCounter >= 1 && this.currentJumpFrame < this.IMAGES_JUMPING.length - 1) {
             this.currentJumpFrame++;
             this.jumpFrameCounter = 0;
         }
