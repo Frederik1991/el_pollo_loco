@@ -55,13 +55,17 @@ class Chicken extends MovableObject {
         }, 1000 / 200);
     }
 
+    /**
+     * Stops the chicken's animation/movement interval.
+     */
     stopAnimations() {
         clearInterval(this.animationInterval);
     }
 
     /**
      * Moves the chicken toward the character's current x position,
-     * flipping its direction as needed.
+     * flipping its direction as needed, and stops once close enough
+     * to avoid jittering back and forth.
      */
     followCharacter() {
         if (!this.world) {
@@ -69,23 +73,17 @@ class Chicken extends MovableObject {
             return;
         }
 
-        // Berechne den Abstand zwischen Gegner und Charakter
-        const abstand = this.world.character.x - this.x;
-        const toleranz = 5; // Abstand in Pixeln, ab dem der Gegner stoppt (Wert anpassen!)
+        const distance = this.world.character.x - this.x;
+        const tolerance = 5;
 
-        // Wenn der Gegner nah genug dran ist, tu nichts (stoppen)
-        if (Math.abs(abstand) <= toleranz) {
-            // Optional: Hier kannst du eine Idle-Animation abspielen oder den Angriff starten
+        if (Math.abs(distance) <= tolerance) {
             return;
         }
 
-        // Wenn der Charakter weiter links ist als die Toleranz erlaubt
         if (this.world.character.x < this.x) {
             this.otherDirection = false;
             this.moveLeft();
-        }
-        // Wenn der Charakter weiter rechts ist als die Toleranz erlaubt
-        else if (this.world.character.x > this.x) {
+        } else if (this.world.character.x > this.x) {
             this.otherDirection = true;
             this.moveRight();
         }
