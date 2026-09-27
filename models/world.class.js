@@ -12,6 +12,7 @@ class World {
     statusBarHealth = new StatusBarHealth
     statusBarBottle = new StatusBarBottle(this);
     statusBarCoin = new StatusBarCoins(this);
+    statusBarEndboss = new StatusBarEndboss();
     throwableObject = [];
     collectedBottles = [];
     collectedCoins = [];
@@ -47,37 +48,38 @@ class World {
      * Starts the main game loop, running all collision and status checks.
      */
     run() {
-        this.gameInterval = setInterval(() => {
-            this.checkCollisions();
-            this.checkThrowObject();
-            this.checkThrowableObjectCollisions();
-            this.checkBottleCollision();
-            this.checkCoinCollision();
-            this.checkGameStatus();
-        }, 50);
-    }
+    this.gameInterval = setInterval(() => {
+        this.checkCollisions();
+        this.checkThrowObject();
+        this.checkThrowableObjectCollisions();
+        this.checkBottleCollision();
+        this.checkCoinCollision();
+        this.checkGameStatus();
+        this.checkEndbossVisibility();
+    }, 50);
+}
 
     checkGameStatus() {
-    if (this.gameEnded) {
-        return;
+        if (this.gameEnded) {
+            return;
+        }
+        if (this.character.isDead()) {
+            this.gameEnded = true;
+            clearInterval(this.gameInterval);
+            this.stopEnemyAnimations();
+            this.showLoseScreen();
+            SoundManager.play('gameOver');
+            SoundManager.sounds.music.pause();
+        } else if (this.level.enemies.some(e => e instanceof Endboss && e.isDead())) {
+            this.gameEnded = true;
+            clearInterval(this.gameInterval);
+            this.stopEnemyAnimations();
+            const endboss = this.level.enemies.find(e => e instanceof Endboss);
+            endboss.playDeathAnimationOnce(() => this.showWinScreen());
+            SoundManager.play('win');
+            SoundManager.sounds.music.pause();
+        }
     }
-    if (this.character.isDead()) {
-        this.gameEnded = true;
-        clearInterval(this.gameInterval);
-        this.stopEnemyAnimations();
-        this.showLoseScreen();
-        SoundManager.play('gameOver');
-        SoundManager.sounds.music.pause();
-    } else if (this.level.enemies.some(e => e instanceof Endboss && e.isDead())) {
-        this.gameEnded = true;
-        clearInterval(this.gameInterval);
-        this.stopEnemyAnimations();
-        const endboss = this.level.enemies.find(e => e instanceof Endboss);
-        endboss.playDeathAnimationOnce(() => this.showWinScreen());
-        SoundManager.play('win');
-        SoundManager.sounds.music.pause();
-    }
-}
 
     /**
      * Stops all running animations/intervals for chickens and the endboss,
@@ -117,6 +119,7 @@ class World {
                     SoundManager.play('bottleBreak');
                     if (enemy instanceof Endboss) {
                         enemy.hit();
+                        this.statusBarEndboss.setPercentage(enemy.energy / 50 * 100);
                     } else {
                         enemy.energy = 0;
                     }
@@ -151,41 +154,41 @@ class World {
  * If the character lands on top of any enemy, kills those enemies
  * and skips normal damage entirely for this frame.
  */
-checkCollisions() {
-    const collidingEnemies = this.level.enemies.filter(enemy =>
-        !enemy.isDead() && this.character.isColliding(enemy)
-    );
+    checkCollisions() {
+        const collidingEnemies = this.level.enemies.filter(enemy =>
+            !enemy.isDead() && this.character.isColliding(enemy)
+        );
 
-    if (collidingEnemies.length === 0) {
-        return;
+        if (collidingEnemies.length === 0) {
+            return;
+        }
+
+        const jumpKilledAny = this.handleJumpKills(collidingEnemies);
+        if (jumpKilledAny) {
+            return;
+        }
+
+        collidingEnemies.forEach(enemy => this.handleEnemyCollision(enemy));
     }
 
-    const jumpKilledAny = this.handleJumpKills(collidingEnemies);
-    if (jumpKilledAny) {
-        return;
+    /**
+     * Kills every chicken the character is currently landing on top of.
+     * @param {MovableObject[]} collidingEnemies - Enemies colliding with the character.
+     * @returns {boolean} True if at least one enemy was jump-killed.
+     */
+    handleJumpKills(collidingEnemies) {
+        const fallenOn = collidingEnemies.filter(enemy =>
+            enemy instanceof Chicken && this.character.isFallingOn(enemy)
+        );
+
+        if (fallenOn.length === 0) {
+            return false;
+        }
+
+        fallenOn.forEach(enemy => enemy.energy = 0);
+        this.character.jump();
+        return true;
     }
-
-    collidingEnemies.forEach(enemy => this.handleEnemyCollision(enemy));
-}
-
-/**
- * Kills every chicken the character is currently landing on top of.
- * @param {MovableObject[]} collidingEnemies - Enemies colliding with the character.
- * @returns {boolean} True if at least one enemy was jump-killed.
- */
-handleJumpKills(collidingEnemies) {
-    const fallenOn = collidingEnemies.filter(enemy =>
-        enemy instanceof Chicken && this.character.isFallingOn(enemy)
-    );
-
-    if (fallenOn.length === 0) {
-        return false;
-    }
-
-    fallenOn.forEach(enemy => enemy.energy = 0);
-    this.character.jump();
-    return true;
-}
 
     /**
      * Resolves a single collision between the character and an enemy:
@@ -278,12 +281,29 @@ handleJumpKills(collidingEnemies) {
     }
 
     /**
-     * Draws the fixed-position status bars.
-     */
+ * Draws the fixed-position status bars.
+ */
     drawStatusBars() {
         this.addToMap(this.statusBarHealth);
         this.addToMap(this.statusBarBottle);
         this.addToMap(this.statusBarCoin);
+        if (this.statusBarEndboss.isVisible) {
+            this.addToMap(this.statusBarEndboss);
+        }
+    }
+
+    /**
+ * Reveals the endboss health bar the first time the character
+ * gets close enough to see the endboss.
+ */
+    checkEndbossVisibility() {
+        if (this.statusBarEndboss.isVisible) {
+            return;
+        }
+        const endboss = this.level.enemies.find(e => e instanceof Endboss);
+        if (endboss && Math.abs(this.character.x - endboss.x) < 700) {
+            this.statusBarEndboss.isVisible = true;
+        }
     }
 
     /**
