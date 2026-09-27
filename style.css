@@ -198,9 +198,9 @@ canvas {
 
 .dialog-box {
     position: relative;
-    background: #d4a01c;
+    background: #A0220A;
     color: white;
-    border: 3px solid #f8cb01;
+    border: 3px solid #d4a01c;
     border-radius: 16px;
     padding: 24px 32px;
     max-width: 500px;
