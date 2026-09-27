@@ -34,6 +34,22 @@ function restartGame() {
 }
 
 /**
+ * Stops the current game and immediately starts a new one,
+ * skipping the start screen.
+ */
+function playAgain() {
+    if (world) {
+        clearInterval(world.gameInterval);
+        cancelAnimationFrame(world.animationFrame);
+    }
+    document.getElementById('winScreen').classList.add('d-none');
+    document.getElementById('loseScreen').classList.add('d-none');
+    document.getElementById('impressumButton').classList.add('hide-during-game');
+    init();
+    SoundManager.sounds.music.play();
+}
+
+/**
  * Builds a fresh level and creates a new World instance.
  */
 function init() {
