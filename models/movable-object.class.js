@@ -21,19 +21,19 @@ class MovableObject extends DrawableObject {
  * until it reaches the ground, then snaps it exactly to
  * ground level to avoid landing-position drift.
  */
-applyGravity() {
-    setInterval(() => {
-        if (this.isAboveGround() || this.speedY > 0) {
-            this.y -= this.speedY;
-            this.speedY -= this.acceleration;
+    applyGravity() {
+        setInterval(() => {
+            if (this.isAboveGround() || this.speedY > 0) {
+                this.y -= this.speedY;
+                this.speedY -= this.acceleration;
 
-            if (!(this instanceof ThrowableObject) && this.y >= 130) {
-                this.y = 130;
-                this.speedY = 0;
+                if (!(this instanceof ThrowableObject) && this.y >= 130) {
+                    this.y = 130;
+                    this.speedY = 0;
+                }
             }
-        }
-    }, 1000 / 25);
-}
+        }, 1000 / 25);
+    }
 
     /**
      * Checks whether the object is currently above the ground.
@@ -97,14 +97,19 @@ applyGravity() {
     }
 
     /**
-     * Computes the object's collision box, adjusted by its offsets.
-     * @returns {{x: number, y: number, width: number, height: number}} The collision box.
-     */
+ * Computes the object's collision box, adjusted by its offsets.
+ * Swaps left/right offsets when the object is mirrored, so the
+ * hitbox matches the visually flipped sprite.
+ * @returns {{x: number, y: number, width: number, height: number}} The collision box.
+ */
     getCollisionBox() {
+        let leftOffset = this.otherDirection ? this.offset.right : this.offset.left;
+        let rightOffset = this.otherDirection ? this.offset.left : this.offset.right;
+
         return {
-            x: this.x + this.offset.left,
+            x: this.x + leftOffset,
             y: this.y + this.offset.top,
-            width: this.width - this.offset.left - this.offset.right,
+            width: this.width - leftOffset - rightOffset,
             height: this.height - this.offset.top - this.offset.bottom,
         };
     }

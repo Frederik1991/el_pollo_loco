@@ -6,10 +6,10 @@ class Bottle extends MovableObject {
     width = 60; // Set a fixed width for Bottles
     height = 80; // Set a fixed height for Bottles
     offset = {
-        top: 10,
-        right: 10,
-        bottom: 5,
-        left: 10,
+        top: 20,
+        right: 20,
+        bottom: 10,
+        left: 20,
     };
 
     /**
