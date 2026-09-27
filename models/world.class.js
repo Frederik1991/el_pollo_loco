@@ -35,7 +35,7 @@ class World {
     }
 
     /**
-     * Gives the character and the endboss a reference back to this world.
+     * Gives the character and every enemy a reference back to this world.
      */
     setWorld() {
         this.character.world = this;
@@ -48,36 +48,69 @@ class World {
      * Starts the main game loop, running all collision and status checks.
      */
     run() {
-    this.gameInterval = setInterval(() => {
-        this.checkCollisions();
-        this.checkThrowObject();
-        this.checkThrowableObjectCollisions();
-        this.checkBottleCollision();
-        this.checkCoinCollision();
-        this.checkGameStatus();
-        this.checkEndbossVisibility();
-    }, 50);
-}
+        this.gameInterval = setInterval(() => {
+            this.checkCollisions();
+            this.checkThrowObject();
+            this.checkThrowableObjectCollisions();
+            this.checkBottleCollision();
+            this.checkCoinCollision();
+            this.checkGameStatus();
+            this.checkEndbossVisibility();
+        }, 50);
+    }
 
+    /**
+     * Checks whether the game has been won or lost, and if so,
+     * delegates to the matching handler.
+     */
     checkGameStatus() {
         if (this.gameEnded) {
             return;
         }
         if (this.character.isDead()) {
-            this.gameEnded = true;
-            clearInterval(this.gameInterval);
-            this.stopEnemyAnimations();
-            this.showLoseScreen();
-            SoundManager.play('gameOver');
-            SoundManager.sounds.music.pause();
+            this.handleLoss();
         } else if (this.level.enemies.some(e => e instanceof Endboss && e.isDead())) {
-            this.gameEnded = true;
-            clearInterval(this.gameInterval);
-            this.stopEnemyAnimations();
-            const endboss = this.level.enemies.find(e => e instanceof Endboss);
-            endboss.playDeathAnimationOnce(() => this.showWinScreen());
-            SoundManager.play('win');
-            SoundManager.sounds.music.pause();
+            this.handleWin();
+        }
+    }
+
+    /**
+     * Stops the game, shows the lose screen, and plays the game-over sound.
+     */
+    handleLoss() {
+        this.gameEnded = true;
+        clearInterval(this.gameInterval);
+        this.stopEnemyAnimations();
+        this.showLoseScreen();
+        SoundManager.play('gameOver');
+        SoundManager.sounds.music.pause();
+    }
+
+    /**
+     * Stops the game, plays the endboss death animation, then shows
+     * the win screen and plays the win sound.
+     */
+    handleWin() {
+        this.gameEnded = true;
+        clearInterval(this.gameInterval);
+        this.stopEnemyAnimations();
+        const endboss = this.level.enemies.find(e => e instanceof Endboss);
+        endboss.playDeathAnimationOnce(() => this.showWinScreen());
+        SoundManager.play('win');
+        SoundManager.sounds.music.pause();
+    }
+
+    /**
+     * Reveals the endboss health bar the first time the character
+     * gets close enough to see the endboss.
+     */
+    checkEndbossVisibility() {
+        if (this.statusBarEndboss.isVisible) {
+            return;
+        }
+        const endboss = this.level.enemies.find(e => e instanceof Endboss);
+        if (endboss && Math.abs(this.character.x - endboss.x) < 700) {
+            this.statusBarEndboss.isVisible = true;
         }
     }
 
@@ -108,25 +141,37 @@ class World {
     }
 
     /**
-     * Checks all thrown bottles against all enemies, damaging or
-     * killing an enemy on the first hit and playing a break sound.
+     * Checks all thrown bottles against all enemies, resolving
+     * a hit on the first match and playing a break sound.
      */
     checkThrowableObjectCollisions() {
         this.throwableObject.forEach((throwableObject) => {
             this.level.enemies.forEach((enemy) => {
                 if (!throwableObject.hasHit && !enemy.isDead() && throwableObject.isColliding(enemy)) {
-                    throwableObject.hasHit = true;
-                    SoundManager.play('bottleBreak');
-                    if (enemy instanceof Endboss) {
-                        enemy.hit();
-                        this.statusBarEndboss.setPercentage(enemy.energy / 50 * 100);
-                    } else {
-                        enemy.energy = 0;
-                    }
-                    throwableObject.playAnimation(throwableObject.IMAGES_SPLASH);
+                    this.resolveBottleHit(throwableObject, enemy);
                 }
             });
         });
+    }
+
+    /**
+     * Marks a bottle as having hit, damages or kills the enemy,
+     * plays the break sound and splash animation.
+     * @param {ThrowableObject} throwableObject - The bottle that hit.
+     * @param {MovableObject} enemy - The enemy that was hit.
+     */
+    resolveBottleHit(throwableObject, enemy) {
+        throwableObject.hasHit = true;
+        SoundManager.play('bottleBreak');
+
+        if (enemy instanceof Endboss) {
+            enemy.hit();
+            this.statusBarEndboss.setPercentage(enemy.energy / 50 * 100);
+        } else {
+            enemy.energy = 0;
+        }
+
+        throwableObject.playAnimation(throwableObject.IMAGES_SPLASH);
     }
 
     /**
@@ -150,10 +195,10 @@ class World {
     }
 
     /**
- * Checks collisions between the character and every living enemy.
- * If the character lands on top of any enemy, kills those enemies
- * and skips normal damage entirely for this frame.
- */
+     * Checks collisions between the character and every living enemy.
+     * If the character lands on top of any enemy, kills those enemies
+     * and skips normal damage entirely for this frame.
+     */
     checkCollisions() {
         const collidingEnemies = this.level.enemies.filter(enemy =>
             !enemy.isDead() && this.character.isColliding(enemy)
@@ -192,16 +237,10 @@ class World {
 
     /**
      * Resolves a single collision between the character and an enemy:
-     * jump-kill, endboss attack, or a normal hit.
+     * endboss attack, or a normal hit.
      * @param {MovableObject} enemy - The enemy the character collided with.
      */
     handleEnemyCollision(enemy) {
-        if (enemy instanceof Chicken && this.character.isFallingOn(enemy)) {
-            enemy.energy = 0;
-            this.character.jump();
-            return;
-        }
-
         if (enemy instanceof Endboss) {
             enemy.attack();
             if (enemy.isAttacking && !this.character.isHurt()) {
@@ -281,28 +320,15 @@ class World {
     }
 
     /**
- * Draws the fixed-position status bars.
- */
+     * Draws the fixed-position status bars, including the endboss
+     * bar once it has been made visible.
+     */
     drawStatusBars() {
         this.addToMap(this.statusBarHealth);
         this.addToMap(this.statusBarBottle);
         this.addToMap(this.statusBarCoin);
         if (this.statusBarEndboss.isVisible) {
             this.addToMap(this.statusBarEndboss);
-        }
-    }
-
-    /**
- * Reveals the endboss health bar the first time the character
- * gets close enough to see the endboss.
- */
-    checkEndbossVisibility() {
-        if (this.statusBarEndboss.isVisible) {
-            return;
-        }
-        const endboss = this.level.enemies.find(e => e instanceof Endboss);
-        if (endboss && Math.abs(this.character.x - endboss.x) < 700) {
-            this.statusBarEndboss.isVisible = true;
         }
     }
 
@@ -330,7 +356,6 @@ class World {
         }
 
         mo.draw(this.ctx)
-        // mo.drawFrame(this.ctx)
 
         if (mo.otherDirection) {
             mo.x = mo.x * -1;
