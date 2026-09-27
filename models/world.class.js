@@ -57,29 +57,27 @@ class World {
         }, 50);
     }
 
-    /**
-     * Checks whether the game has been won or lost, and if so,
-     * shows the matching screen and plays the matching sound.
-     */
     checkGameStatus() {
-        if (this.gameEnded) {
-            return;
-        }
-        if (this.character.isDead()) {
-            this.gameEnded = true;
-            this.stopEnemyAnimations();
-            this.showLoseScreen();
-            SoundManager.play('gameOver');
-            SoundManager.sounds.music.pause();
-        } else if (this.level.enemies.some(e => e instanceof Endboss && e.isDead())) {
-            this.gameEnded = true;
-            this.stopEnemyAnimations();
-            const endboss = this.level.enemies.find(e => e instanceof Endboss);
-            endboss.playDeathAnimationOnce(() => this.showWinScreen());
-            SoundManager.play('win');
-            SoundManager.sounds.music.pause();
-        }
+    if (this.gameEnded) {
+        return;
     }
+    if (this.character.isDead()) {
+        this.gameEnded = true;
+        clearInterval(this.gameInterval);
+        this.stopEnemyAnimations();
+        this.showLoseScreen();
+        SoundManager.play('gameOver');
+        SoundManager.sounds.music.pause();
+    } else if (this.level.enemies.some(e => e instanceof Endboss && e.isDead())) {
+        this.gameEnded = true;
+        clearInterval(this.gameInterval);
+        this.stopEnemyAnimations();
+        const endboss = this.level.enemies.find(e => e instanceof Endboss);
+        endboss.playDeathAnimationOnce(() => this.showWinScreen());
+        SoundManager.play('win');
+        SoundManager.sounds.music.pause();
+    }
+}
 
     /**
      * Stops all running animations/intervals for chickens and the endboss,
