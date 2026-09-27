@@ -17,17 +17,23 @@ class MovableObject extends DrawableObject {
     };
 
     /**
-     * Continuously applies gravity, pulling the object down
-     * until it reaches the ground.
-     */
-    applyGravity() {
-        setInterval(() => {
-            if (this.isAboveGround() || this.speedY > 0) {
-                this.y -= this.speedY;
-                this.speedY -= this.acceleration;
+ * Continuously applies gravity, pulling the object down
+ * until it reaches the ground, then snaps it exactly to
+ * ground level to avoid landing-position drift.
+ */
+applyGravity() {
+    setInterval(() => {
+        if (this.isAboveGround() || this.speedY > 0) {
+            this.y -= this.speedY;
+            this.speedY -= this.acceleration;
+
+            if (!(this instanceof ThrowableObject) && this.y >= 130) {
+                this.y = 130;
+                this.speedY = 0;
             }
-        }, 1000 / 25);
-    }
+        }
+    }, 1000 / 25);
+}
 
     /**
      * Checks whether the object is currently above the ground.
