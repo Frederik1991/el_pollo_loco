@@ -108,23 +108,21 @@ class Character extends MovableObject {
     }
 
     /**
-     * Checks whether the character is currently falling onto the
-     * top side of a given movable object (used for jump-kill logic).
-     * @param {MovableObject} mo - The object to check against.
-     * @returns {boolean} True if the character is landing on top of mo.
-     */
-    isFallingOn(mo) {
-        const characterBox = this.getCollisionBox();
-        const otherBox = mo.getCollisionBox();
-        const currentBottom = characterBox.y + characterBox.height;
-        const previousBottom = currentBottom + this.speedY;
-        const isFalling = this.speedY < 0;
-        const crossedEnemyTop = previousBottom <= otherBox.y + 15 && currentBottom > otherBox.y;
-        const overlapsHorizontally = characterBox.x + characterBox.width > otherBox.x &&
-            characterBox.x < otherBox.x + otherBox.width;
+ * Checks whether the character is currently falling onto the
+ * top side of a given movable object (used for jump-kill logic).
+ * @param {MovableObject} mo - The object to check against.
+ * @returns {boolean} True if the character is landing on top of mo.
+ */
+isFallingOn(mo) {
+    const characterBox = this.getCollisionBox();
+    const otherBox = mo.getCollisionBox();
+    const isFalling = this.speedY < 0;
+    const landedOnTopHalf = characterBox.y + characterBox.height <= otherBox.y + otherBox.height / 2;
+    const overlapsHorizontally = characterBox.x + characterBox.width > otherBox.x &&
+        characterBox.x < otherBox.x + otherBox.width;
 
-        return isFalling && crossedEnemyTop && overlapsHorizontally;
-    }
+    return isFalling && landedOnTopHalf && overlapsHorizontally;
+}
 
     /**
      * Starts the movement/input loop and the animation-selection loop.

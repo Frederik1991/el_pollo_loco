@@ -147,15 +147,45 @@ class World {
     }
 
     /**
-     * Checks collisions between the character and every living enemy.
-     */
-    checkCollisions() {
-        this.level.enemies.forEach((enemy) => {
-            if (!enemy.isDead() && this.character.isColliding(enemy)) {
-                this.handleEnemyCollision(enemy);
-            }
-        });
+ * Checks collisions between the character and every living enemy.
+ * If the character lands on top of any enemy, kills those enemies
+ * and skips normal damage entirely for this frame.
+ */
+checkCollisions() {
+    const collidingEnemies = this.level.enemies.filter(enemy =>
+        !enemy.isDead() && this.character.isColliding(enemy)
+    );
+
+    if (collidingEnemies.length === 0) {
+        return;
     }
+
+    const jumpKilledAny = this.handleJumpKills(collidingEnemies);
+    if (jumpKilledAny) {
+        return;
+    }
+
+    collidingEnemies.forEach(enemy => this.handleEnemyCollision(enemy));
+}
+
+/**
+ * Kills every chicken the character is currently landing on top of.
+ * @param {MovableObject[]} collidingEnemies - Enemies colliding with the character.
+ * @returns {boolean} True if at least one enemy was jump-killed.
+ */
+handleJumpKills(collidingEnemies) {
+    const fallenOn = collidingEnemies.filter(enemy =>
+        enemy instanceof Chicken && this.character.isFallingOn(enemy)
+    );
+
+    if (fallenOn.length === 0) {
+        return false;
+    }
+
+    fallenOn.forEach(enemy => enemy.energy = 0);
+    this.character.jump();
+    return true;
+}
 
     /**
      * Resolves a single collision between the character and an enemy:
