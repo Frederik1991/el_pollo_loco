@@ -2,20 +2,20 @@ let canvas;
 let world;
 let keyboard = new Keyboard();
 
-window.addEventListener('load', () => {
-    SoundManager.init();
-    updateMuteIcon();
-    setupTouchControls();
+window.addEventListener("load", () => {
+  SoundManager.init();
+  updateMuteIcon();
+  setupTouchControls();
 });
 
 /**
  * Hides the start screen, initializes a new game, and starts the music.
  */
 function startGame() {
-    document.getElementById('startScreen').classList.add('d-none');
-    document.getElementById('impressumButton').classList.add('hide-during-game');
-    init();
-    SoundManager.sounds.music.play();
+  document.getElementById("startScreen").classList.add("d-none");
+  document.getElementById("impressumButton").classList.add("hide-during-game");
+  init();
+  SoundManager.sounds.music.play();
 }
 
 /**
@@ -23,14 +23,16 @@ function startGame() {
  * and shows the start screen again.
  */
 function restartGame() {
-    if (world) {
-        clearInterval(world.gameInterval);
-        cancelAnimationFrame(world.animationFrame);
-    }
-    document.getElementById('winScreen').classList.add('d-none');
-    document.getElementById('loseScreen').classList.add('d-none');
-    document.getElementById('startScreen').classList.remove('d-none');
-    document.getElementById('impressumButton').classList.remove('hide-during-game');
+  if (world) {
+    clearInterval(world.gameInterval);
+    cancelAnimationFrame(world.animationFrame);
+  }
+  document.getElementById("winScreen").classList.add("d-none");
+  document.getElementById("loseScreen").classList.add("d-none");
+  document.getElementById("startScreen").classList.remove("d-none");
+  document
+    .getElementById("impressumButton")
+    .classList.remove("hide-during-game");
 }
 
 /**
@@ -38,66 +40,66 @@ function restartGame() {
  * skipping the start screen.
  */
 function playAgain() {
-    if (world) {
-        clearInterval(world.gameInterval);
-        cancelAnimationFrame(world.animationFrame);
-    }
-    document.getElementById('winScreen').classList.add('d-none');
-    document.getElementById('loseScreen').classList.add('d-none');
-    document.getElementById('impressumButton').classList.add('hide-during-game');
-    init();
-    SoundManager.sounds.music.play();
+  if (world) {
+    clearInterval(world.gameInterval);
+    cancelAnimationFrame(world.animationFrame);
+  }
+  document.getElementById("winScreen").classList.add("d-none");
+  document.getElementById("loseScreen").classList.add("d-none");
+  document.getElementById("impressumButton").classList.add("hide-during-game");
+  init();
+  SoundManager.sounds.music.play();
 }
 
 /**
  * Builds a fresh level and creates a new World instance.
  */
 function init() {
-    createLevel1();
-    canvas = document.getElementById('canvas');
-    world = new World(canvas, keyboard);
+  createLevel1();
+  canvas = document.getElementById("canvas");
+  world = new World(canvas, keyboard);
 }
 
 /**
  * Toggles the mute state and updates the mute button icon.
  */
 function toggleMute() {
-    SoundManager.toggleMute();
-    updateMuteIcon();
+  SoundManager.toggleMute();
+  updateMuteIcon();
 }
 
 /**
  * Updates the mute button's icon to match the current mute state.
  */
 function updateMuteIcon() {
-    let button = document.getElementById('muteButton');
-    button.textContent = SoundManager.isMuted ? '🔇' : '🔊';
+  let button = document.getElementById("muteButton");
+  button.textContent = SoundManager.isMuted ? "🔇" : "🔊";
 }
 
 /**
  * Binds all touch control buttons to their matching keyboard properties.
  */
 function setupTouchControls() {
-    bindTouchButton('btnLeft', 'left');
-    bindTouchButton('btnRight', 'right');
-    bindTouchButton('btnJump', 'space');
-    bindTouchButton('btnThrow', 'd');
+  bindTouchButton("btnLeft", "left");
+  bindTouchButton("btnRight", "right");
+  bindTouchButton("btnJump", "space");
+  bindTouchButton("btnThrow", "d");
 }
 
 /**
  * Shows the story/controls info dialog.
  */
 function openInfoDialog() {
-    document.getElementById('infoDialog').classList.remove('d-none');
-    document.body.style.overflow = 'hidden';
+  document.getElementById("infoDialog").classList.remove("d-none");
+  document.body.style.overflow = "hidden";
 }
 
 /**
  * Hides the story/controls info dialog and restores background scrolling.
  */
 function closeInfoDialog() {
-    document.getElementById('infoDialog').classList.add('d-none');
-    document.body.style.overflow = '';
+  document.getElementById("infoDialog").classList.add("d-none");
+  document.body.style.overflow = "";
 }
 
 /**
@@ -106,9 +108,9 @@ function closeInfoDialog() {
  * @param {MouseEvent} event - The click event.
  */
 function closeInfoDialogOnOverlay(event) {
-    if (event.target.id === 'infoDialog') {
-        closeInfoDialog();
-    }
+  if (event.target.id === "infoDialog") {
+    closeInfoDialog();
+  }
 }
 
 /**
@@ -118,64 +120,62 @@ function closeInfoDialogOnOverlay(event) {
  * @param {string} keyboardProperty - The Keyboard property to toggle.
  */
 function bindTouchButton(buttonId, keyboardProperty) {
-    let button = document.getElementById(buttonId);
+  let button = document.getElementById(buttonId);
 
-    button.addEventListener('touchstart', (event) => {
-        event.preventDefault();
-        keyboard[keyboardProperty] = true;
-    });
+  button.addEventListener("touchstart", (event) => {
+    event.preventDefault();
+    keyboard[keyboardProperty] = true;
+  });
 
-    button.addEventListener('touchend', (event) => {
-        event.preventDefault();
-        keyboard[keyboardProperty] = false;
-    });
+  button.addEventListener("touchend", (event) => {
+    event.preventDefault();
+    keyboard[keyboardProperty] = false;
+  });
 
-    button.addEventListener('contextmenu', (event) => {
-        event.preventDefault();
-    });
+  button.addEventListener("contextmenu", (event) => {
+    event.preventDefault();
+  });
 }
 
 window.addEventListener("keydown", (event) => {
-    if (event.key == 'ArrowLeft') {
-        keyboard.left = true;
-    }
-    if (event.key == 'ArrowRight') {
-        keyboard.right = true;
-    }
-    if (event.key == 'ArrowUp') {
-        keyboard.up = true;
-    }
-    if (event.key == 'ArrowDown') {
-        keyboard.down = true;
-    }
-    if (event.key == ' ') {
-        event.preventDefault();
-        keyboard.space = true;
-    }
-    if (event.code == 'KeyD') {
-        keyboard.d = true;
-    }
-
+  if (event.key == "ArrowLeft") {
+    keyboard.left = true;
+  }
+  if (event.key == "ArrowRight") {
+    keyboard.right = true;
+  }
+  if (event.key == "ArrowUp") {
+    keyboard.up = true;
+  }
+  if (event.key == "ArrowDown") {
+    keyboard.down = true;
+  }
+  if (event.key == " ") {
+    event.preventDefault();
+    keyboard.space = true;
+  }
+  if (event.code == "KeyD") {
+    keyboard.d = true;
+  }
 });
 
 window.addEventListener("keyup", (event) => {
-    if (event.key == 'ArrowLeft') {
-        keyboard.left = false;
-    }
-    if (event.key == 'ArrowRight') {
-        keyboard.right = false;
-    }
-    if (event.key == 'ArrowUp') {
-        keyboard.up = false;
-    }
-    if (event.key == 'ArrowDown') {
-        keyboard.down = false;
-    }
-    if (event.key == ' ') {
-        keyboard.space = false;
-    }
-    if (event.code == 'KeyD') {
-        keyboard.d = false;
-    }
-
+  if (event.key == "ArrowLeft") {
+    keyboard.left = false;
+  }
+  if (event.key == "ArrowRight") {
+    keyboard.right = false;
+  }
+  if (event.key == "ArrowUp") {
+    keyboard.up = false;
+  }
+  if (event.key == "ArrowDown") {
+    keyboard.down = false;
+  }
+  if (event.key == " ") {
+    keyboard.space = false;
+  }
+  if (event.code == "KeyD") {
+    keyboard.d = false;
+  }
 });
