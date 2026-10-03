@@ -56,7 +56,7 @@ class World {
       this.checkCoinCollision();
       this.checkGameStatus();
       this.checkEndbossVisibility();
-    }, 50);
+    }, 1000 / 60);
   }
 
   /**
