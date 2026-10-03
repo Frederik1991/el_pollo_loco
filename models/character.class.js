@@ -117,7 +117,7 @@ isFallingOn(mo) {
     const characterBox = this.getCollisionBox();
     const otherBox = mo.getCollisionBox();
     const isFalling = this.speedY < 0;
-    const landedOnTopHalf = characterBox.y + characterBox.height <= otherBox.y + otherBox.height / 2;
+    const landedOnTopHalf = characterBox.y + characterBox.height <= otherBox.y + otherBox.height / 0.75;
     const overlapsHorizontally = characterBox.x + characterBox.width > otherBox.x &&
         characterBox.x < otherBox.x + otherBox.width;
 
