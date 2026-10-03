@@ -1,11 +1,14 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" type="image/png" href="img/3_enemies_chicken/chicken_small/1_walk/1_w.png">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="icon"
+      type="image/png"
+      href="img/3_enemies_chicken/chicken_small/1_walk/1_w.png"
+    />
     <title>El Pollo Loco</title>
     <script src="models/drawable-object.class.js"></script>
     <script src="models/movable-object.class.js"></script>
@@ -28,72 +31,97 @@
     <script src="levels/level1.js"></script>
     <script src="models/sound-manager.class.js"></script>
     <script src="js/game.js"></script>
-</head>
+  </head>
 
-<body class="game-page">
-
+  <body class="game-page">
     <h1>El Pollo Loco</h1>
 
     <div class="game-container">
-        <canvas id="canvas" width="720" height="480"></canvas>
+      <canvas id="canvas" width="720" height="480"></canvas>
 
-        <button id="muteButton" class="mute-button" onclick="toggleMute()">🔊</button>
+      <button id="muteButton" class="mute-button" onclick="toggleMute()">
+        🔊
+      </button>
 
-        <a href="impressum.html" id="impressumButton" class="button impressum-button">Impressum</a>
+      <a
+        href="impressum.html"
+        id="impressumButton"
+        class="button impressum-button"
+        >Impressum</a
+      >
 
-        <div id="startScreen" class="screen">
-            <img class="screen-img" src="img/9_intro_outro_screens/start/startscreen_1.png" alt="Startbildschirm">
-            <button class="button" onclick="startGame()">Start</button>
-            <button class="button" onclick="openInfoDialog()">Anleitung</button>
-        </div>
-        <div id="winScreen" class="screen d-none">
-            <img class="screen-img" src="img/You won, you lost/You won A.png" alt="Gewonnen">
-            <button class="button" onclick="restartGame()">Menu</button>
-            <button class="button" onclick="playAgain()">Neustart</button>
-        </div>
-        <div id="loseScreen" class="screen d-none">
-            <img class="screen-img" src="img/You won, you lost/You lost b.png" alt="Verloren">
-            <button class="button" onclick="restartGame()">Menu</button>
-            <button class="button" onclick="playAgain()">Neustart</button>
-        </div>
+      <div id="startScreen" class="screen">
+        <img
+          class="screen-img"
+          src="img/9_intro_outro_screens/start/startscreen_1.png"
+          alt="Startbildschirm"
+        />
+        <button class="button" onclick="startGame()">Start</button>
+        <button class="button" onclick="openInfoDialog()">Anleitung</button>
+      </div>
+      <div id="winScreen" class="screen d-none">
+        <img
+          class="screen-img"
+          src="img/You won, you lost/You won A.png"
+          alt="Gewonnen"
+        />
+        <button class="button" onclick="restartGame()">Menu</button>
+        <button class="button" onclick="playAgain()">Neustart</button>
+      </div>
+      <div id="loseScreen" class="screen d-none">
+        <img
+          class="screen-img"
+          src="img/You won, you lost/You lost b.png"
+          alt="Verloren"
+        />
+        <button class="button" onclick="restartGame()">Menu</button>
+        <button class="button" onclick="playAgain()">Neustart</button>
+      </div>
 
-        <div id="touchControls" class="touch-controls">
-            <div class="touch-left">
-                <button id="btnLeft" class="touch-button">←</button>
-                <button id="btnRight" class="touch-button">→</button>
-            </div>
-            <div class="touch-right">
-                <button id="btnThrow" class="touch-button">
-                    <img class="throw-button-img" src="img/6_salsa_bottle/1_salsa_bottle_on_ground.png" alt="Flasche werfen">
-                </button>
-                <button id="btnJump" class="touch-button">⬆</button>
-            </div>
+      <div id="touchControls" class="touch-controls">
+        <div class="touch-left">
+          <button id="btnLeft" class="touch-button">←</button>
+          <button id="btnRight" class="touch-button">→</button>
         </div>
+        <div class="touch-right">
+          <button id="btnThrow" class="touch-button">
+            <img
+              class="throw-button-img"
+              src="img/6_salsa_bottle/1_salsa_bottle_on_ground.png"
+              alt="Flasche werfen"
+            />
+          </button>
+          <button id="btnJump" class="touch-button">⬆</button>
+        </div>
+      </div>
     </div>
 
     <div id="rotateHint" class="rotate-hint">
-        <p>Bitte drehe dein Gerät ins Querformat, um zu spielen.</p>
+      <p>Bitte drehe dein Gerät ins Querformat, um zu spielen.</p>
     </div>
 
-    <div id="infoDialog" class="dialog-overlay d-none" onclick="closeInfoDialogOnOverlay(event)">
-    <div class="dialog-box">
+    <div
+      id="infoDialog"
+      class="dialog-overlay d-none"
+      onclick="closeInfoDialogOnOverlay(event)"
+    >
+      <div class="dialog-box">
         <button class="dialog-close" onclick="closeInfoDialog()">✕</button>
         <h2>Die Geschichte</h2>
         <p>
-            Pepe hat sich in der Wüste verlaufen, auf der Suche nach dem legendären
-            El Pollo Loco. Zwischen Kakteen und wilden Hühnern muss er sich seinen Weg
-            bahnen, Münzen und Salsa-Flaschen sammeln und sich dem gefürchteten
-            Hühner-Endboss stellen. Um den Endboss zu besiegen, brauchst du alle Flaschen, die du finden kannst. Viel Glück!
+          Pepe hat sich in der Wüste verlaufen, auf der Suche nach dem
+          legendären El Pollo Loco. Zwischen Kakteen und wilden Hühnern muss er
+          sich seinen Weg bahnen, Münzen und Salsa-Flaschen sammeln und sich dem
+          gefürchteten Hühner-Endboss stellen. Um den Endboss zu besiegen,
+          brauchst du alle Flaschen, die du finden kannst. Viel Glück!
         </p>
-         <div class="keyboard-controls">
-            <h2>Steuerung</h2>
-            <p><strong>←</strong> <strong>→</strong> Laufen</p>
-            <p><strong>Leertaste</strong> Springen</p>
-            <p><strong>D</strong> Flasche werfen</p>
+        <div class="keyboard-controls">
+          <h2>Steuerung</h2>
+          <p><strong>←</strong> <strong>→</strong> Laufen</p>
+          <p><strong>Leertaste</strong> Springen</p>
+          <p><strong>D</strong> Flasche werfen</p>
         </div>
+      </div>
     </div>
-</div>
-
-</body>
-
+  </body>
 </html>
