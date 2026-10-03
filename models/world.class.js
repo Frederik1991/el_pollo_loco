@@ -285,6 +285,7 @@ class World {
     this.level.bottles.forEach((bottle, index) => {
       if (this.character.isColliding(bottle)) {
         this.collectedBottles.push(bottle);
+        SoundManager.play("bottle");
         this.statusBarBottle.setPercentage(
           (this.collectedBottles.length / 20) * 100,
         );
