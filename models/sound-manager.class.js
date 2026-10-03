@@ -14,6 +14,7 @@ class SoundManager {
     collectCoin: new Audio("audio/coin.flac"),
     win: new Audio("audio/win.wav"),
     gameOver: new Audio("audio/game_over.wav"),
+    bottle: new Audio("audio/bottle.wav"),
   };
 
   /**
@@ -27,6 +28,7 @@ class SoundManager {
     this.sounds.throwBottle.volume = 0.5;
     this.sounds.bottleBreak.volume = 0.5;
     this.sounds.collectCoin.volume = 0.4;
+    this.sounds.bottle.volume = 0.5;
     this.sounds.win.volume = 0.6;
     this.sounds.gameOver.volume = 0.6;
     this.applyMuteState();
