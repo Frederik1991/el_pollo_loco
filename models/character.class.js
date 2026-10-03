@@ -142,7 +142,7 @@ isFallingOn(mo) {
      * and camera follow. Does nothing if the character is dead.
      */
     handleMovementInput() {
-        if (this.isDead()) {
+        if (this.isDead() || this.world.gameEnded) {
             return;
         }
         this.handleHorizontalMovement();
@@ -179,24 +179,27 @@ isFallingOn(mo) {
     }
 
     /**
-     * Selects and plays the correct animation based on the
-     * character's current state (hurt, dead, jumping, walking, idle).
-     */
-    handleAnimationState() {
-        if (this.isHurt()) {
-            this.playAnimation(this.IMAGES_HURT);
-        } else if (this.isDead()) {
-            this.playDeadAnimationOnce();
-        } else if (this.isAboveGround()) {
-            this.playJumpAnimationOnce();
-        } else if (this.world.keyboard.right || this.world.keyboard.left) {
-            this.playWalkingAnimation();
-        } else if (this.isLongIdle()) {
-            this.playAnimation(this.IMAGES_LONG_IDLE);
-        } else {
-            this.playAnimation(this.IMAGES_IDLE);
-        }
+ * Selects and plays the correct animation based on the
+ * character's current state (hurt, dead, jumping, walking, idle).
+ * Freezes the animation once the game has ended (unless dying).
+ */
+handleAnimationState() {
+    if (this.isHurt()) {
+        this.playAnimation(this.IMAGES_HURT);
+    } else if (this.isDead()) {
+        this.playDeadAnimationOnce();
+    } else if (this.world.gameEnded) {
+        return;
+    } else if (this.isAboveGround()) {
+        this.playJumpAnimationOnce();
+    } else if (this.world.keyboard.right || this.world.keyboard.left) {
+        this.playWalkingAnimation();
+    } else if (this.isLongIdle()) {
+        this.playAnimation(this.IMAGES_LONG_IDLE);
+    } else {
+        this.playAnimation(this.IMAGES_IDLE);
     }
+}
 
     /**
     * Plays the jump animation once, advancing one frame per
