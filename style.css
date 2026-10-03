@@ -239,6 +239,24 @@ canvas {
     word-break: break-word;
 }
 
+body.impressum-page {
+    position: relative;
+}
+
+body.impressum-page::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    z-index: 0;
+}
+
+body.impressum-page h1,
+body.impressum-page .impressum-content {
+    position: relative;
+    z-index: 1;
+}
+
 /* Touch-Buttons nur auf Tablet/Handy zeigen */
 @media (hover: none) and (pointer: coarse) {
     .touch-controls {
