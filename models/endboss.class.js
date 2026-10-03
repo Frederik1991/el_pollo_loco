@@ -6,7 +6,7 @@ class Endboss extends MovableObject {
 
     width = 300;
     height = 500;
-    y = -10;
+    y = -30;
     energy = 50;
     isAttacking = false;
     offset = {
@@ -184,10 +184,10 @@ class Endboss extends MovableObject {
     followCharacter() {
         if (this.world.character.x < this.x) {
             this.otherDirection = false;
-            this.x -= 30;
+            this.x -= 40;
         } else {
             this.otherDirection = true;
-            this.x += 30;
+            this.x += 40;
         }
     }
 

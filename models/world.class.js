@@ -186,6 +186,7 @@ class World {
         if (this.keyboard.d && this.collectedBottles.length > 0 && cooldownElapsed) {
             this.lastThrowTime = now;
             this.collectedBottles.pop();
+            this.character.lastActionTime = now;
             SoundManager.play('throwBottle');
             this.statusBarBottle.setPercentage(this.collectedBottles.length / 20 * 100);
             let direction = this.character.otherDirection ? -1 : 1;
