@@ -167,6 +167,7 @@ class World {
         if (enemy instanceof Endboss) {
             enemy.hit();
             this.statusBarEndboss.setPercentage(enemy.energy / 50 * 100);
+            this.statusBarEndboss.triggerFlash();
         } else {
             enemy.energy = 0;
         }
@@ -246,6 +247,7 @@ class World {
             if (enemy.isAttacking && !this.character.isHurt()) {
                 this.character.hit(20);
                 this.statusBarHealth.setPercentage(this.character.energy);
+                this.statusBarHealth.triggerFlash();
             }
             return;
         }
@@ -253,6 +255,7 @@ class World {
         if (!this.character.isHurt()) {
             this.character.hit();
             this.statusBarHealth.setPercentage(this.character.energy);
+            this.statusBarHealth.triggerFlash();
         }
     }
 

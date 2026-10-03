@@ -13,6 +13,13 @@ class StatusBarHealth extends DrawableObject {
     ]
 
     percentage = 100;
+    flashUntil = 0;
+    flashInset = {
+        top: 30,
+        right: 5,
+        bottom: 10,
+        left: 27,
+    };
 
     /**
      * Creates the health status bar, loads its images,
@@ -57,6 +64,34 @@ class StatusBarHealth extends DrawableObject {
             return 4;
         } else {
             return 5;
+        }
+    }
+
+    /**
+    * Triggers a brief red flash overlay to visually confirm damage,
+    * even when the percentage change doesn't cross a displayed threshold.
+    */
+    triggerFlash() {
+        this.flashUntil = new Date().getTime() + 150;
+    }
+
+    /**
+ * Draws the bar image, plus a brief, rounded red flash overlay,
+ * inset to roughly match the visible bar area.
+ * @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
+ */
+    draw(ctx) {
+        super.draw(ctx);
+        if (new Date().getTime() < this.flashUntil) {
+            let x = this.x + this.flashInset.left;
+            let y = this.y + this.flashInset.top;
+            let width = this.width - this.flashInset.left - this.flashInset.right;
+            let height = this.height - this.flashInset.top - this.flashInset.bottom;
+
+            ctx.fillStyle = 'rgba(255, 0, 0, 0.4)';
+            ctx.beginPath();
+            ctx.roundRect(x, y, width, height, 12);
+            ctx.fill();
         }
     }
 }
