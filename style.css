@@ -32,14 +32,15 @@ h1 {
     letter-spacing: 3px;
     text-shadow: 4px 2px 2px rgba(0, 0, 0, 0.5);
     text-align: center;
+    margin: 8px 0;
 }
 
 
 .game-container {
     position: relative;
-    width: 100%;
-    max-width: 720px;
+    width: min(100%, 720px, calc((100vh - 140px) * 720 / 480));
     aspect-ratio: 720 / 480;
+    margin-bottom: 50px;
 }
 
 canvas {
