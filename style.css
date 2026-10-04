@@ -340,3 +340,11 @@ body.impressum-page .impressum-content {
     display: none;
   }
 }
+
+@media (hover: none) and (pointer: coarse) and (max-width: 480px) {
+  .touch-button {
+    width: 44px;
+    height: 44px;
+    font-size: 18px;
+  }
+}
