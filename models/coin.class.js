@@ -6,9 +6,9 @@ class Coin extends MovableObject {
   height = 100; // Set a fixed height for coins
   offset = {
     top: 40,
-    right: 35,
+    right: 28,
     bottom: 40,
-    left: 35,
+    left: 24,
   };
   IMAGES = ["img/8_coin/coin_1.png", "img/8_coin/coin_2.png"];
 

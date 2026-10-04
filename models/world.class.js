@@ -322,6 +322,7 @@ class World {
     this.ctx.translate(-this.camera_x, 0);
     this.drawStatusBars();
     this.ctx.translate(this.camera_x, 0);
+    this.addObjectsToMap(this.level.coins);
     this.addToMap(this.character);
     this.ctx.translate(-this.camera_x, 0);
 
@@ -333,15 +334,14 @@ class World {
 
   /**
    * Draws all level objects (background, clouds, enemies, bottles,
-   * coins, thrown bottles) within the camera transform, excluding
-   * the character (drawn separately on top).
+   * thrown bottles) within the camera transform, excluding coins and
+   * the character (both drawn separately on top of the status bars).
    */
   drawLevelObjects() {
     this.addObjectsToMap(this.level.backgroundObjects);
     this.addObjectsToMap(this.level.clouds);
     this.addObjectsToMap(this.level.enemies);
     this.addObjectsToMap(this.level.bottles);
-    this.addObjectsToMap(this.level.coins);
     this.addObjectsToMap(this.throwableObject);
   }
 
